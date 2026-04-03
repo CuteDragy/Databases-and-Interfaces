@@ -1,0 +1,199 @@
+header{
+    background-color: black;
+    color: white;
+    display: inline-block;
+    width: 100%;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body{
+    margin: 0;
+    padding: 0;
+}
+
+#internship-detail-header{
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+#internship-detail-header-content{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 2px 4px 6px rgb(216, 216, 216);
+    width: 153vh;
+    padding: 10px;
+    border-radius: 12.5px;
+    background-color: white;
+}
+
+a{
+    text-decoration: none;
+    color: rgb(16, 16, 178);
+    font-weight: bold;
+}
+
+#main-content-container{
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+#main-content{
+    display: flex;
+    justify-content: space-between;
+    width: 145vh;
+}
+
+#main-content-left-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 10px;
+    gap: 20px;
+    width: 65%;
+}
+
+.content-row{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.section-header{
+    font-size: 12px;
+    font-weight: bold;
+    color: grey;
+}
+
+#internship-details{
+    box-shadow: 2px 4px 6px rgb(216, 216, 216);
+    border-radius: 12.5px;
+    padding: 10px;
+    width: 42%;
+    padding: 20px;
+}
+
+#programme{
+    font-size: 26px;
+    font-weight: bold;
+}
+
+#company-id{
+    border-radius: 10px;
+    background-color: rgb(203, 222, 239);
+    font-weight: bold;
+    padding: 2px 10px;
+    color: rgb(75, 74, 74);
+    margin-right: 6px;
+}
+
+#company-name{
+    font-size: 12px;
+    color: rgb(59, 59, 59);
+    margin-top: 10px;
+}
+
+#identification-details{
+    box-shadow: 2px 4px 6px rgb(216, 216, 216);
+    border-radius: 12.5px;
+    padding: 30px;
+    width: 42%;
+    background-color: #eceff5;
+}
+
+#student-details{
+    display: flex;
+    gap: 67px;
+    width: 100%;
+    padding-right: 100px;
+    margin-top: 12px;
+    margin-bottom: 12px;
+}
+
+#assessor-details{
+    display: flex;
+    gap: 60px;
+    width: 100%;
+    margin-top: 2px;
+}
+
+.section-data{
+    font-size: 18px;
+    font-weight: bold;
+}
+
+label{
+    font-size: 12px;
+    font-weight: bold;
+    color: rgb(157, 150, 141);
+}
+
+.assessor-description{
+    font-size: 9px;
+    color: grey;
+    font-weight: bolder;
+}
+
+#timeline{
+    box-shadow: 2px 4px 6px rgb(216, 216, 216);
+    border-radius: 12.5px;
+    padding: 30px;
+    width: 100%;
+}
+
+#timeline-section-header{
+    font-size: 19px;
+    font-weight: bold;
+}
+
+#timeline-section-content{
+    width: 80%;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+#assessor-feedback-container{
+    box-shadow: 2px 4px 6px rgb(216, 216, 216);
+    border-radius: 12.5px;
+    padding: 20px 15px 15px 15px;
+    width: 100%;
+    background-color: #eceff5;
+}
+
+#feedback-section-header{
+    font-size: 16px;
+    font-weight: bold;
+}
+
+#assessor-feedback{
+    box-shadow: 2px 4px 6px rgb(216, 216, 216);
+    border-radius: 8px;
+    padding: 30px;
+    background-color: white;   
+    margin-top: 25px;
+}
+
+#main-content-right-container{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 30%;
+    padding: 10px;
+}
+
+#result-overview{
+    box-shadow: 2px 4px 6px rgb(216, 216, 216);
+    border-radius: 12.5px;
+    padding: 30px;
+    width: 100%;
+}
+
+#internal-comment{
+    box-shadow: 2px 4px 6px rgb(216, 216, 216);
+    border-radius: 12.5px;
+    padding: 30px;
+    width: 100%;
+}

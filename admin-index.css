@@ -1,0 +1,81 @@
+header{
+    background-color: black;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+body{
+    margin: 0;
+    padding: 0;
+}
+
+#main{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.admin-index-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 50px;
+    gap: 20px;
+    transition: transform 0.2s;
+}
+
+.admin-index-container:hover {
+    transform: translateY(-5px); 
+}
+
+.admin-index-content{
+    display: inline-block;
+    text-align: center;
+    border-style: solid;
+    width: 25vh;
+    height: 30vh;
+    border-width: 2px;
+    padding: 10px;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+.admin-home-options {
+    text-decoration: none; 
+    color: inherit;        
+    min-width: 250px; 
+}
+
+#student-profile-icon{
+    padding-top: 35px;
+    padding-bottom: 35px;
+    width: 15vh;
+    justify-content: center;
+}
+
+#assessor-profile-icon{
+    padding-top: 20px;
+    padding-bottom: 15px;
+    width: 20vh;
+    justify-content: center;
+}
+
+#internship-icon{
+    padding-top: 20px;
+    
+    width: 20vh;
+    justify-content: center;
+}
+
+#company-icon{
+    padding-top: 20px;
+    padding-bottom: 15px;
+    width: 20vh;
+    justify-content: center;
+}
