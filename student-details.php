@@ -2,6 +2,10 @@
     session_Start();
     include('db.php');
 
+    $condition = "where user_id = 12345 ";
+    $instruction = "select * from users $condition";
+    $action = mysqli_query($conn, $instruction) or die(mysqli_error($conn));
+    $user_profile = mysqli_fetch_array($action);
 
     if(isset($_GET['studentid'])){
         $student_id = mysqli_real_escape_string($conn, $_GET['studentid']);
@@ -15,11 +19,11 @@
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <title>Admin Index | Student Details</title>
-    <link rel="stylesheet" href="admin-sidebar.css">
-    <link rel="stylesheet" href="student-details.css?v=<?php echo filemtime('style.css');?>">
+    <link rel="stylesheet" href="css/admin-sidebar.css">
+    <link rel="stylesheet" href="css/student-details.css?v=<?php echo filemtime('style.css');?>">
 </head>
 <body>
 
@@ -27,7 +31,7 @@
         <div>
             <p
                 style="margin-top: 10px; margin-left: 13px; margin-bottom: 3px; line-height: 1; box-sizing: content-box; font-weight: bold; font-size: 27px; font-style: oblique;">
-                Hello, Guest</p>
+                Hello,<br> <?php echo $user_profile['name']; ?></p>
         </div>
         <button class="close-btn" onclick="toggleSidebar()">&times;</button>
         <div style="margin-top: 35px; font-family:Arial, sans-serif;">
@@ -50,6 +54,7 @@
                     <td style="padding-left: 15px;"><h1>Student Details</h1></td>
                 </tr>
             </table>
+            <div><a href="#" title="Logout"><img src="image/logout-button.png" width="50" height="50"></a></div>
         </header>
 
         <div id="student-detail-header">
@@ -152,16 +157,7 @@
             </div>
         </div>
 
-    <script>
-        function toggleSidebar() {
-            const sidebar = document.getElementById("mySidebar");
-            const overlay = document.getElementById("overlay");
-
-            // Toggle the 'show' class
-            sidebar.classList.toggle("show");
-            overlay.classList.toggle("show");
-        }
-    </script>
+    <script src="js/sidebar.js"></script>
 
 </body>
 </html>

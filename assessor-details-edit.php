@@ -16,11 +16,12 @@
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <title>Admin Index | New Company</title>
-    <link rel="stylesheet" href="admin-sidebar.css">
-    <link rel="stylesheet" href="assessor-details-edit.css">
+    <link rel="stylesheet" href="css/admin-sidebar.css">
+    <link rel="stylesheet" href="css/assessor-details-edit.css?v=<?php echo filemtime('style.css');?>">
+    <link rel="stylesheet" href="css/formCheck.css">
 </head>
 <body>
 
@@ -51,45 +52,44 @@
                     <td style="padding-left: 15px;"><h1>Editting Assessor Details</h1></td>
                 </tr>
             </table>
+            <div><a href="#" title="Logout"><img src="image/logout-button.png" width="50" height="50"></a></div>
         </header>
 
         <div class="assessor-details-edit-container">
-            <div class="assessor-details-edit">
-                <div id="back-button"><?php echo "<a href='assessor-details.php?assessorid=" . $assessor_id . "'>X</a>";?></div>
-                <h2 style="text-align: center; text-decoration: underline;">Edit Assessor Details</h2>
-                <br>
-                <form action="assessor-details-update.php" method="POST">
-                    <div class="assessor-detail-container">
-                        <h4><b>Please fill in following details...</b></h4>
-                        <label for="user_id">User ID:</label>
-                        <input type="text" id="user_id" name="user_id" value="<?php echo $assessor_details['user_id'] ?>" required><br>
-                        <label for="name">Name:</label>
-                        <input type="text" id="name" name="name" value="<?php echo $assessor_details['name'] ?>"><br>
-                        <label for="role">Role:</label>
-                        <input type="text" id="role" name="role" value="Assessor" readonly><br>
-                        <label for="passwords">Password:</label>
-                        <input type="password" id="passwords" name="passwords" value="<?php echo $assessor_details['passwords'] ?>"><br>
-                        <label for="email">Email:</label>
-                        <input type="text" id="email" name="email" value="<?php echo $assessor_details['email'] ?>"><br>
-                        <label for="organization">Organization:</label>
-                        <input type="text" id="organization" name="organization" value="<?php echo $assessor_details['organization'] ?>"><br>
-                    </div>
-                    <input type="submit" id="submit-button" class="submit-button" name="submit-button" value="Update Assessor">
-                </form>
-            </div>
+            <form action="assessor-details-update.php" method="POST" id="editAssessorForm">
+                <div class="assessor-details-edit">
+                    <div id="back-button"><?php echo "<a href='assessor-details.php?assessorid=" . $assessor_id . "'>BACK</a>";?></div>
+                    <h2 style="text-align: center; text-decoration: underline;">Edit Assessor Details</h2>
+                    <br>
+                        <div class="assessor-detail-container">
+                            <h4><b>Please fill in following details...</b></h4>
+                            <span class="error-msg" id="error-user_id"></span>
+                            <label for="user_id">USER ID</label>
+                            <input type="text" id="user_id" name="user_id" value="<?php echo $assessor_details['user_id'] ?>" readonly><br>
+                            <span class="error-msg" id="error-name"></span>
+                            <label for="name">NAME</label>
+                            <input type="text" id="name" name="name" value="<?php echo $assessor_details['name'] ?>"><br>
+                            <span class="error-msg" id="error-role"></span>
+                            <label for="role">ROLE</label>
+                            <input type="text" id="role" name="role" value="Assessor" readonly><br>
+                            <span class="error-msg" id="error-passwords"></span>
+                            <label for="passwords">PASSWORD</label>
+                            <input type="password" id="passwords" name="passwords" value="<?php echo $assessor_details['passwords'] ?>"><br>
+                            <span class="error-msg" id="error-email"></span>
+                            <label for="email">EMAIL</label>
+                            <input type="text" id="email" name="email" value="<?php echo $assessor_details['email'] ?>"><br>
+                            <span class="error-msg" id="error-organization"></span>
+                            <label for="organization">ORGANIZATION</label>
+                            <input type="text" id="organization" name="organization" value="<?php echo $assessor_details['organization'] ?>"><br>
+                        </div>
+                </div>
+                <input type="submit" id="submit-button" class="submit-button" name="submit-button" value="UPDATE ASSESSOR">
+            </form>
         </div>
     </div>
 
-    <script>
-        function toggleSidebar() {
-            const sidebar = document.getElementById("mySidebar");
-            const overlay = document.getElementById("overlay");
-
-            // Toggle the 'show' class
-            sidebar.classList.toggle("show");
-            overlay.classList.toggle("show");
-        }
-    </script>
+    <script src="js/sidebar.js"></script>
+    <script src="js/formCheck.js"></script>
 
 </body>
 </html>

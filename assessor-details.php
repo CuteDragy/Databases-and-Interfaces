@@ -26,11 +26,11 @@
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <title>Admin Index | Assessor Details</title>
-    <link rel="stylesheet" href="admin-sidebar.css">
-    <link rel="stylesheet" href="assessor-details.css">
+    <link rel="stylesheet" href="css/admin-sidebar.css">
+    <link rel="stylesheet" href="css/assessor-details.css">
 </head>
 <body>
 
@@ -61,6 +61,7 @@
                     <td style="padding-left: 15px;"><h1>Assessor Details</h1></td>
                 </tr>
             </table>
+            <div><a href="#" title="Logout"><img src="image/logout-button.png" width="50" height="50"></a></div>
         </header>
 
         <div id="assessor-detail-header">
@@ -141,16 +142,7 @@
             </div>
         </div>
 
-    <script>
-        function toggleSidebar() {
-            const sidebar = document.getElementById("mySidebar");
-            const overlay = document.getElementById("overlay");
-
-            // Toggle the 'show' class
-            sidebar.classList.toggle("show");
-            overlay.classList.toggle("show");
-        }
-    </script>
+    <script src="js/sidebar.js"></script>
 
 </body>
 </html>

@@ -2,6 +2,11 @@
     session_Start();
     include('db.php');
 
+    $condition = "where user_id = 12345 ";
+    $instruction = "select * from users $condition";
+    $action = mysqli_query($conn, $instruction) or die(mysqli_error($conn));
+    $user_profile = mysqli_fetch_array($action);
+
 
     if(isset($_GET['internshipid'])){
         $internship_id = mysqli_real_escape_string($conn, $_GET['internshipid']);
@@ -14,11 +19,12 @@
 ?>
 
 <!DOCTYPE html>
-<html>
+<html  lang="en">
 <head>
     <title>Admin Index | Edit Internship Details</title>
-    <link rel="stylesheet" href="admin-sidebar.css">
-    <link rel="stylesheet" href="internship-details-edit.css">
+    <link rel="stylesheet" href="css/admin-sidebar.css">
+    <link rel="stylesheet" href="css/internship-details-edit.css?v=<?php echo filemtime('style.css');?>">
+    <link rel="stylesheet" href="css/formCheck.css">
 </head>
 <body>
 
@@ -26,7 +32,7 @@
         <div>
             <p
                 style="margin-top: 10px; margin-left: 13px; margin-bottom: 3px; line-height: 1; box-sizing: content-box; font-weight: bold; font-size: 27px; font-style: oblique;">
-                Hello, Guest</p>
+                Hello,<br><?php echo $user_profile['name'];?></p>
         </div>
         <button class="close-btn" onclick="toggleSidebar()">&times;</button>
         <div style="margin-top: 35px; font-family:Arial, sans-serif;">
@@ -49,38 +55,48 @@
                     <td style="padding-left: 15px;"><h1>Editting Internship Details</h1></td>
                 </tr>
             </table>
+            <div><a href="#" title="Logout"><img src="image/logout-button.png" width="50" height="50"></a></div>
         </header>
 
         <div class="internship-details-container">
-            <div class="internship-details">
-                <div id="back-button"><div><a href="internships.php">X</a></div></div>
-                <h2 style="text-align: center; text-decoration: underline;">Internship Details</h2>
-                <form method="POST" action="internship-details-update.php">
+            <form method="POST" action="internship-details-update.php" id="editInternshipForm">
+                <div class="internship-details">
+                    <div id="back-button"><div><a href="internships.php">BACK</a></div></div>
+                    <h2 style="text-align: center; text-decoration: underline;">Internship Details</h2>
                     <div class="internship-details-edit-container">
                         <h4><b>Internship Details</b></h4>
-                        <label for="internship_id">Internship ID:</label> 
+                        <span class="error-msg" id="error-internship_id"></span>
+                        <label for="internship_id">INTERNSHIP ID</label> 
                         <input type="text" id="internship_id" name="internship_id" value="<?php echo $internship_details['internship_id'] ?>" readonly><br>
-                        <label for="student_id">Student ID:</label>
+                        <span class="error-msg" id="error-student_id"></span>
+                        <label for="student_id">STUDENT ID</label>
                         <input type="text" id="student_id" name="student_id" value="<?php echo $internship_details['student_id'] ?>"><br>
-                        <label for="internal_assessor_id">Internal Assessor ID:</label>
+                        <span class="error-msg" id="error-internal_assessor_id"></span>
+                        <label for="internal_assessor_id">INTERNAL ASSESSOR ID</label>
                         <input type="text" id="internal_assessor_id" name="internal_assessor_id" value="<?php echo $internship_details['internal_assessor_id'] ?>"><br>
-                        <label for="external_assessor_id">External Assessor ID:</label>
+                        <span class="error-msg" id="error-external_assessor_id"></span>
+                        <label for="external_assessor_id">EXTERNAL ASSESSOR ID</label>
                         <input type="text" id="external_assessor_id" name="external_assessor_id" value="<?php echo $internship_details['external_assessor_id'] ?>"><br>
-                        <label for="company_id">Company ID:</label>
+                        <span class="error-msg" id="error-company_id"></span>
+                        <label for="company_id">COMPANY ID</label>
                         <input type="text" id="company_id" name="company_id" value="<?php echo $internship_details['company_id'] ?>"><br>
                     </div><hr>
                     <div class="internship-details-edit-container">
                         <h4><b>Date and Duration</b></h4>
-                        <label for="startDate">Start Date:</label>
+                        <span class="error-msg" id="error-startDate"></span>
+                        <label for="startDate">START DATE</label>
                         <input type="date" id="startDate" name="startDate" onchange="calculateDuration()" 
                             value="<?php echo date('Y-m-d', strtotime($internship_details['startDate']));?>"><br>
-                        <label for="endDate">End Date:</label>
+                        <span class="error-msg" id="error-endDate"></span>
+                        <label for="endDate">END DATE</label>
                         <input type="date" id="endDate" name="endDate" onchange="calculateDuration()" 
                             value="<?php echo date('Y-m-d', strtotime($internship_details['endDate']));?>"><br>
                         <?php $duration = date_diff(date_create($internship_details['startDate']),date_create($internship_details['endDate'])); ?>
-                        <label for="duration">Duration:</label>
-                        <input type="text" id="duration" name="duration" value="<?php echo $duration -> format('%a days'); ?>"><br>
-                        <label for="current_status">Current Status:</label>
+                        <span class="error-msg" id="error-duration"></span>
+                        <label for="duration">DURATION</label>
+                        <input type="text" id="duration" name="duration" value="<?php echo $duration -> format('%a days'); ?>" readonly><br>
+                        <span class="error-msg" id="error-current_status"></span>
+                        <label for="current_status">CURRENT STATUS</label>
                         <div id="current-status-container">
                             <span>
                                 <input type="radio" id="Ongoing" name="current_status" value="Ongoing"  
@@ -94,46 +110,16 @@
                             </span>
                         </div>
                     </div><br>    
-                    <input type="submit" id="submit-button" name="submit-button" value="Save Changes">
-                </form>
+                </div>
+                <input type="submit" id="submit-button" name="submit-button" value="Save Changes">
+            </form>
             </div>
         </div>
     </div>
 
-    <script>
-        function toggleSidebar() {
-            const sidebar = document.getElementById("mySidebar");
-            const overlay = document.getElementById("overlay");
-
-            // Toggle the 'show' class
-            sidebar.classList.toggle("show");
-            overlay.classList.toggle("show");
-        }
-
-        function calculateDuration() {
-            const startInput = document.getElementById('startDate').value;
-            const endInput = document.getElementById('endDate').value;
-            const durationInput = document.getElementById('duration');
-
-            if (startInput && endInput) {
-                const start = new Date(startInput);
-                const end = new Date(endInput);
-
-                // Calculate the difference in milliseconds
-                const diffInMs = end - start;
-
-                // Convert milliseconds to days
-                // 1 day = 24 hours * 60 mins * 60 secs * 1000 ms
-                const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
-
-                if (diffInDays >= 0) {
-                    durationInput.value = diffInDays;
-                } else {
-                    durationInput.value = "Invalid range";
-                }
-            }
-        }
-    </script>
+    <script src="js/sidebar.js"></script>
+    <script src="js/calculateDuration.js"></script>
+    <script src="js/formCheck.js"></script>
 
 </body>
 </html>

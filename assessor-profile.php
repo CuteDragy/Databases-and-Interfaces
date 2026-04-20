@@ -8,11 +8,11 @@
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <title>Admin Index | Assessor Profile</title>
-    <link rel="stylesheet" href="admin-sidebar.css">
-    <link rel="stylesheet" href="assessor-profile.css?v=<?php echo filemtime('style.css');?>">
+    <link rel="stylesheet" href="css/admin-sidebar.css">
+    <link rel="stylesheet" href="css/assessor-profile.css?v=<?php echo filemtime('style.css');?>">
 </head>
 <body>
     <div class="sidebar" id="mySidebar">
@@ -42,6 +42,7 @@
                     <td style="padding-left: 15px;"><h1>Assessor Profiles</h1></td>
                 </tr>
             </table>
+            <div><a href="#" title="Logout"><img src="image/logout-button.png" width="50" height="50"></a></div>
         </header>
 
         <?php 
@@ -128,16 +129,7 @@
         </div>
     </div>
 
-    <script>
-        function toggleSidebar() {
-            const sidebar = document.getElementById("mySidebar");
-            const overlay = document.getElementById("overlay");
-
-            // Toggle the 'show' class
-            sidebar.classList.toggle("show");
-            overlay.classList.toggle("show");
-        }
-    </script>
+    <script src="js/sidebar.js"></script>
 
 </body>
 </html>

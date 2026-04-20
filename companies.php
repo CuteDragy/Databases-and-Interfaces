@@ -19,11 +19,11 @@
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <title>Admin Index | Companies</title>
-    <link rel="stylesheet" href="admin-sidebar.css">
-    <link rel="stylesheet" href="companies.css?v=<?php echo filemtime('style.css');?>">
+    <link rel="stylesheet" href="css/admin-sidebar.css">
+    <link rel="stylesheet" href="css/companies.css?v=<?php echo filemtime('style.css');?>">
 </head>
 <body>
     <div class="sidebar" id="mySidebar">
@@ -119,16 +119,7 @@
         </div>
     </div>
 
-    <script>
-        function toggleSidebar() {
-            const sidebar = document.getElementById("mySidebar");
-            const overlay = document.getElementById("overlay");
-
-            // Toggle the 'show' class
-            sidebar.classList.toggle("show");
-            overlay.classList.toggle("show");
-        }
-    </script>
+    <script src="js/sidebar.js"></script>
 
 </body>
 </html>

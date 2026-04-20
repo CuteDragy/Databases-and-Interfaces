@@ -15,11 +15,12 @@
 ?>
 
 <!DOCTYPE html>
-<html>
+<html  lang="en">
 <head>
     <title>Admin Index | New Company</title>
-    <link rel="stylesheet" href="admin-sidebar.css">
-    <link rel="stylesheet" href="new-company.css">
+    <link rel="stylesheet" href="css/admin-sidebar.css">
+    <link rel="stylesheet" href="css/new-company.css?v=<?php echo filemtime('style.css');?>">
+    <link rel="stylesheet" href="css/formCheck.css">
 </head>
 <body>
 
@@ -47,53 +48,53 @@
             <table>
                 <tr>
                     <td style="padding: 5px;"><button class="menu-btn" onclick="toggleSidebar()">&#9776;</button></td>
-                    <td style="padding-left: 15px;"><h1>New Student</h1></td>
+                    <td style="padding-left: 15px;"><h1>New Company</h1></td>
                 </tr>
             </table>
+            <div><a href="#" title="Logout"><img src="image/logout-button.png" width="50" height="50"></a></div>
         </header>
 
         <div class="new-company-container">
-            <div class="new-company">
-                <div id="back-button"><a href="companies.php">X</a></div>
-                <h2 style="text-align: center; text-decoration: underline;">Company Details</h2>
-                <br>
-                <form action="new-company-process.php" method="POST">
+            <form action="new-company-process.php" method="POST" id="newCompanyForm">
+                <div class="new-company">
+                    <div id="back-button"><a href="companies.php">BACK</a></div>
+                    <h2 style="text-align: center; text-decoration: underline;">Company Details</h2>
+                    <br>
                     <div class="new-company-detail-container">
                         <h4><b>Company Details</b></h4>
-                        <label for="company_id">Company ID:</label>
+                        <span class="error-msg" id="error-company_id"></span>
+                        <label for="company_id">COMPANY ID</label>
                         <input type="text" id="company_id" name="company_id" value="<?php echo $next_id; ?>" required><br>
-                        <label for="name">Company Name:</label>
+                        <span class="error-msg" id="error-name"></span>
+                        <label for="name">COMPANY NAME</label>
                         <input type="text" id="name" name="company_name"><br>
-                        <label for="industry">Industry:</label>
+                        <span class="error-msg" id="error-industry"></span>
+                        <label for="industry">INDUSTRY</label>
                         <input type="text" id="industry" name="industry"><br>
                     </div><hr>
                     <div class="new-company-detail-container">
                         <h4><b>Contact Details</b></h4>
-                        <label for="person_in_charge">Person In Charge:</label>
+                        <span class="error-msg" id="error-person_in_charge"></span>
+                        <label for="person_in_charge">PERSON IN CHARGE</label>
                         <input type="text" id="person_in_charge" name="person_in_charge"><br>
-                        <label for="contactNO">Contact No:</label>
+                        <span class="error-msg" id="error-contactNO"></span>
+                        <label for="contactNO">CONTACT NO</label>
                         <input type="text" id="contactNO" name="contact_no"><br>
-                        <label for="email">Company Email:</label>
+                        <span class="error-msg" id="error-email"></span>
+                        <label for="email">COMPANY EMAIL</label>
                         <input type="email" id="email" name="company_email"><br>
-                        <label for="address">Company Address:</label><br>
+                        <span class="error-msg" id="error-address"></span>
+                        <label for="address">COMPANY ADDRESS</label>
                         <textarea id="address" name="company_address"></textarea><br><br>
                     </div>
-                    <input type="submit" id="submit-button" class="submit-button" name="submit-button" value="Add Company">
-                </form>
-            </div>
+                </div>
+                <input type="submit" id="submit-button" class="submit-button" name="submit-button" value="ADD COMPANY">
+            </form>
         </div>
     </div>
 
-    <script>
-        function toggleSidebar() {
-            const sidebar = document.getElementById("mySidebar");
-            const overlay = document.getElementById("overlay");
-
-            // Toggle the 'show' class
-            sidebar.classList.toggle("show");
-            overlay.classList.toggle("show");
-        }
-    </script>
+    <script src="js/sidebar.js"></script>
+    <script src="js/formCheck.js"></script>
 
 </body>
 </html>

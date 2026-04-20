@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Index | Assessor Details</title>
+    <link rel="stylesheet" href="admin-sidebar.css">
+    <link rel="stylesheet" href="assessor-details.css">
+</head>
+<body>
+
+    <div class="sidebar" id="mySidebar">
+        <div>
+            <p style="margin-top: 10px; margin-left: 13px; margin-bottom: 3px; line-height: 1; box-sizing: content-box;
+             font-weight: bold; font-size: 27px; font-style: oblique;">
+                <?php echo "Hello, <br>".$user_profile['name']. "" ?></p>
+        </div>
+        <button class="close-btn" onclick="toggleSidebar()">&times;</button>
+        <div style="margin-top: 35px; font-family:Arial, sans-serif;">
+            <p style="margin-left: 13px; margin-bottom: 3px; line-height: 1; box-sizing: content-box; font-weight: bold; font-size: 26px;">Menu</p>
+            <a href="admin-index.php" id="navigation-button">Home</a>
+            <a href="user-profile.php" id="navigation-button">User Profile</a>
+            <a href="student-profile.php" id="navigation-button">Student Profile</a>
+            <a href="assessor-profile.php" id="navigation-button">Assessor Profile</a>
+            <a href="internships.php" id="navigation-button">Internships</a>
+            <a href="companies.php" id="navigation-button">Companies</a>
+        </div>
+    </div>
+    <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+    <div id="main">
+        <header>
+            <table>
+                <tr>
+                    <td style="padding: 5px;"><button class="menu-btn" onclick="toggleSidebar()">&#9776;</button></td>
+                    <td style="padding-left: 15px;"><h1>Assessor Details</h1></td>
+                </tr>
+            </table>
+        </header>
+
+        <div id="assessor-detail-header">
+            <div id="assessor-detail-header-content">
+                <div>
+                    <table>
+                        <tr>
+                            <td style="padding-right: 15px; font-weight: 900;">&larr;</td>
+                            <td style="font-size: 20px; font-weight: bold;">Account Details</td>
+                        </tr>
+                    </table> 
+                </div>
+                <div style="padding-right: 20px;">Edit</div>
+            </div>
+        </div>
+        <div id="assessor-detail-content-container">
+            <div id="assessor-detail-content">
+                <div id="assessor-detail-profile-container">
+                    <div id="assessor-detail-profile">
+                        <div><img src="../image/empty-profile.png" width="110" height="110"></div><br>
+                        <div><b>Poong Zhi Yong</b></div>
+                        <div id="profile-role">ASSESSOR</div>
+                        <div id="profile-email">poong@yahoo.com</div>
+                    </div>
+                    <div id="assessor-internships-container">
+                        <div class="assessor-internships">
+                            <div style="font-weight: bolder; font-size: 12px; color: rgb(157, 150, 141);">ASSESSMENT</div>
+                            <div style="font-weight: bold; color: rgb(25, 25, 126); width: 100%;">12</div>
+                        </div>
+                        <div class="assessor-internships">
+                            <div style="font-weight: bolder; font-size: 12px; color: rgb(157, 150, 141);">INTERNSHIPS</div>
+                            <div style="font-weight: bold; color: rgb(25, 25, 126); width: 100%;">12</div>
+                        </div>
+                    </div>
+                </div>
+                <div id="assessor-details">
+                        <br>
+                        <div style="font-size: 20px; font-weight: bold;"><b>Account Information</b></div>
+                        <div style="font-size: 14px; color: grey;">Update personal details and and manage account.</div><br>
+                        <div id="account-information">
+                            <div id="id-name">
+                            <div id="assessor-id">
+                                    <label for="user_id">USER ID</label>
+                                    <input type="text" id="user_id" name="user_id" value="<?php echo $user_details['user_id']?>" readonly>
+                                </div>
+                                <div id="assessor-name">
+                                    <label for="role">ROLE</label>
+                                    <input type="text" id="role" name="role" value="Assessor" readonly><br>
+                                </div>
+                            </div>
+                            <div>
+                                <label for="name">NAME</label>
+                                <input type="text" id="name" name="name" value="<?php echo $user_details['name']?>"><br>
+                            </div>
+                            <div>
+                                <label for="passwords">PASSWORD</label>
+                                <input type="password" id="passwords" name="passwords" value="<?php echo $user_details['passwords']?>"
+                                    readonly style="cursor: not-allowed"><br>
+                            </div>
+                            <div>
+                                <label for="organization">ORGANIZATION</label>
+                                <input type="text" id="organization" name="organization" value="<?php echo $user_details['organization']?>" ><br>
+                            </div>                        
+                            <div>
+                                <label for="email">EMAIL ADDRESS</label>
+                                <input type="text" id="email" name="email" value="<?php echo $user_details['email']?>" ><br>
+                            </div>                        
+                        </div>
+                </div>
+            </div>
+        </div>
+
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById("mySidebar");
+            const overlay = document.getElementById("overlay");
+
+            // Toggle the 'show' class
+            sidebar.classList.toggle("show");
+            overlay.classList.toggle("show");
+        }
+    </script>
+
+</body>
+</html>

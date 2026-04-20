@@ -2,13 +2,17 @@
     session_Start();
     include('db.php');
 
+    $condition = "where user_id = 12345 ";
+    $instruction = "select * from users $condition";
+    $action = mysqli_query($conn, $instruction) or die(mysqli_error($conn));
+    $user_profile = mysqli_fetch_array($action);
 
     if(isset($_GET['companyid'])){
         $company_id = mysqli_real_escape_string($conn, $_GET['companyid']);
-        $condition = "WHERE company_id = $company_id";
-        $instruction = "SELECT * FROM companies $condition" ;
-        $action = mysqli_query($conn, $instruction);
-        $company_details = mysqli_fetch_array($action) or die(mysqli_error($conn));
+        $company_condition = "WHERE company_id = $company_id";
+        $company_stmt = "SELECT * FROM companies $company_condition" ;
+        $company_query = mysqli_query($conn, $company_stmt);
+        $company_details = mysqli_fetch_array($company_query) or die(mysqli_error($conn));
     }
     
     $formatted_id = sprintf('%03d', $company_id);
@@ -16,19 +20,19 @@
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <title>Admin Index | Company Details</title>
-    <link rel="stylesheet" href="admin-sidebar.css">
-    <link rel="stylesheet" href="company-details.css">
+    <link rel="stylesheet" href="css/admin-sidebar.css">
+    <link rel="stylesheet" href="css/company-details.css">
 </head>
 <body>
 
     <div class="sidebar" id="mySidebar">
         <div>
-            <p
-                style="margin-top: 10px; margin-left: 13px; margin-bottom: 3px; line-height: 1; box-sizing: content-box; font-weight: bold; font-size: 27px; font-style: oblique;">
-                Hello, Guest</p>
+            <p style="margin-top: 10px; margin-left: 13px; margin-bottom: 3px; line-height: 1; box-sizing: content-box;
+             font-weight: bold; font-size: 27px; font-style: oblique;">
+                <?php echo "Hello, <br>".$user_profile['name']. "" ?></p>
         </div>
         <button class="close-btn" onclick="toggleSidebar()">&times;</button>
         <div style="margin-top: 35px; font-family:Arial, sans-serif;">
@@ -51,6 +55,7 @@
                     <td style="padding-left: 15px;"><h1>Company Details</h1></td>
                 </tr>
             </table>
+            <div><a href="#" title="Logout"><img src="image/logout-button.png" width="50" height="50"></a></div>
         </header>
 
         <div id="company-detail-header">
@@ -138,16 +143,7 @@
             </div>
         </div>
 
-    <script>
-        function toggleSidebar() {
-            const sidebar = document.getElementById("mySidebar");
-            const overlay = document.getElementById("overlay");
-
-            // Toggle the 'show' class
-            sidebar.classList.toggle("show");
-            overlay.classList.toggle("show");
-        }
-    </script>
+    <script src="js/sidebar.js"></script>
 
 </body>
 </html>

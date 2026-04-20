@@ -1,6 +1,12 @@
 <?php 
     session_Start();
     include('db.php');
+    include('internship-details-result-calculation.php');
+
+    $condition = "where user_id = 12345 ";
+    $instruction = "select * from users $condition";
+    $action = mysqli_query($conn, $instruction) or die(mysqli_error($conn));
+    $user_profile = mysqli_fetch_array($action);
 
     $internship_details = null;
     $external_comments = "";
@@ -15,12 +21,12 @@
         $internship_details = mysqli_fetch_array($action) or die(mysqli_error($conn));
         
         if($internship_details){
-            $external_comment_stmt = "SELECT comments FROM assessments WHERE assessor_id = {$internship_details['external_assessor_id']}";
+            $external_comment_stmt = "SELECT comments FROM assessments WHERE internship_id = $internship_id AND assessor_id = {$internship_details['external_assessor_id']}";
             $external_comment_query = mysqli_query($conn, $external_comment_stmt);
             $external_comments = mysqli_fetch_array($external_comment_query);
         }
         if($internship_details){
-            $internal_comment_stmt = "SELECT comments FROM assessments WHERE assessor_id = {$internship_details['internal_assessor_id']}";
+            $internal_comment_stmt = "SELECT comments FROM assessments WHERE internship_id = $internship_id AND assessor_id = {$internship_details['internal_assessor_id']}";
             $internal_comment_query = mysqli_query($conn, $internal_comment_stmt);
             $internal_comments = mysqli_fetch_array($internal_comment_query);
         }
@@ -47,11 +53,12 @@
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <title>Admin Index | Internship Details</title>
-    <link rel="stylesheet" href="admin-sidebar.css">
-    <link rel="stylesheet" href="internship-details.css?v=<?php echo filemtime('style.css');?>">
+    <link rel="stylesheet" href="css/admin-sidebar.css">
+    <link rel="stylesheet" href="css/internship-details.css?v=<?php echo filemtime('style.css');?>">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 
@@ -59,7 +66,7 @@
         <div>
             <p
                 style="margin-top: 10px; margin-left: 13px; margin-bottom: 3px; line-height: 1; box-sizing: content-box; font-weight: bold; font-size: 27px; font-style: oblique;">
-                Hello, Guest</p>
+                Hello,<br> <?php echo $user_profile['name'];?></p>
         </div>
         <button class="close-btn" onclick="toggleSidebar()">&times;</button>
         <div style="margin-top: 35px; font-family:Arial, sans-serif;">
@@ -82,6 +89,7 @@
                     <td style="padding-left: 15px;"><h1>Internship Details</h1></td>
                 </tr>
             </table>
+            <div><a href="#" title="Logout"><img src="image/logout-button.png" width="50" height="50"></a></div>
         </header>
 
         <div id="internship-detail-header">
@@ -89,7 +97,7 @@
                 <div>
                     <table>
                         <tr>
-                            <td style="padding-right: 15px; font-weight: 900;"><a href="internships.php" title="BACK">&larr;</a></td>
+                            <td id="back-button" style="padding-right: 15px; font-weight: 900;"><a href="internships.php" title="BACK">&larr;</a></td>
                             <td style="font-size: 20px; font-weight: bold;">Internship Information</td>
                         </tr>
                     </table> 
@@ -165,11 +173,24 @@
                     </div>
                 </div>
                 <div id="main-content-right-container">
-                    <div class="content-row">
-                        <div id="result-overview">
-                            <div class="section-header">RESULT OVERVIEW</div>
+                    <a href="#" id="view-result-details" title="MORE DETAILS">
+                        <div class="content-row">
+                            <div id="result-overview">
+                                <div class="section-header">RESULT OVERVIEW</div>
+                                <div style="position: relative; width: 34vh; height: 34vh;">
+                                    <canvas id="myRadarChart"></canvas>
+                                    <div id="average-mark">
+                                        <h2 style="margin: 0; color: #3f587e;"><?php echo round($total_score); ?>%</h2>
+                                        <small style="color: #666; font-size: 14px;">AVG PERFORM</small>
+                                    </div>
+                                </div>
+                                <div id="result-mark-container">
+                                    <label>TOTAL SCORE</label>
+                                    <div id="result-mark"><span id="student-mark"><?php echo $total_score ?></span>/100</div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                    </a>
                     <div class="content-row">
                         <div id="internal-comment">
                             <div class="section-header">INTERNAL FEEDBACK</div>
@@ -187,15 +208,39 @@
             </div>
         </div>
 
+    <script src="js/sidebar.js"></script>    
     <script>
-        function toggleSidebar() {
-            const sidebar = document.getElementById("mySidebar");
-            const overlay = document.getElementById("overlay");
+        const ctx = document.getElementById('myRadarChart').getContext('2d');
 
-            // Toggle the 'show' class
-            sidebar.classList.toggle("show");
-            overlay.classList.toggle("show");
-        }
+        new Chart(ctx, {
+            type: 'radar',
+            data: {
+                labels: <?php echo json_encode($labels); ?>,
+                datasets: [{
+                    label: 'Performance',
+                    data: <?php echo json_encode($values); ?>,
+                    fill: true,
+                    backgroundColor: 'rgba(63, 88, 126, 0.2)', 
+                    borderColor: '#3f587e',                 
+                    pointRadius: 0,                         
+                    borderWidth: 3
+                }]
+            },
+            options: {
+                scales: {
+                    r: {
+                        angleLines: { display: true, color: '#e0e0e0' },
+                        grid: { color: '#e0e0e0', circular: false }, 
+                        suggestedMin: 0,
+                        suggestedMax: 100,
+                        ticks: { display: false } 
+                    }
+                },
+                plugins: {
+                    legend: { display: false } 
+                }
+            }
+        });
     </script>
 
 </body>

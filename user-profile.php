@@ -4,11 +4,11 @@
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <title>Admin Index | User Profile</title>
-    <link rel="stylesheet" href="admin-sidebar.css">
-    <link rel="stylesheet" href="user-profile.css">
+    <link rel="stylesheet" href="css/admin-sidebar.css">
+    <link rel="stylesheet" href="css/user-profile.css?v=<?php echo filemtime('style.css');?>">
 </head>
 <body>
     <?php 
@@ -63,11 +63,14 @@
                 <div id="profile-card">
                     <div id="identity">
                         <img src="image/empty-profile.png" width="100" height="100">
-                        <div style="line-height: 1;"><span style="font-weight: bold; font-size: 24;"><?php echo $user_profile['name'] ?></span><br>
-                        <span style="font-size: 15px; color: rgb(44, 68, 220);"><?php echo $user_profile['role'] ?></span></div>
+                        <div style="line-height: 1;">
+                            <span style="font-weight: bold; font-size: 24;"><?php echo $user_profile['name'] ?></span><br>
+                            <span style="font-size: 15px; font-weight: bold;color: rgb(44, 68, 220);">
+                                <?php echo $user_profile['role'] ?></span>
+                        </div>
                     </div>
                     <div>
-                        <button id="edit-button">Edit Profile</button>
+                        <div id="edit-button"><?php echo "<a href='user-profile-edit.php'>EDIT PROFILE</a>"; ?></div>
                     </div>
                 </div>
                 <div id="user-information">
@@ -94,7 +97,7 @@
                     <div class="user-information-row">
                         <div class="data">
                             <label>ORGANIZATION</label><br>
-                            <input type="text" value="<?php echo $user_profile['organization'] ?>" readonly>
+                            <textarea readonly><?php echo $user_profile['organization']?></textarea> 
                         </div>
                         <div class="data">
                             <label>ACCOUNT CREATED</label><br>
@@ -106,16 +109,7 @@
         </div>
     </div>
 
-    <script>
-        function toggleSidebar() {
-            const sidebar = document.getElementById("mySidebar");
-            const overlay = document.getElementById("overlay");
-
-            // Toggle the 'show' class
-            sidebar.classList.toggle("show");
-            overlay.classList.toggle("show");
-        }
-    </script>
+    <script src="js/sidebar.js"></script>
 
 </body>
 </html>

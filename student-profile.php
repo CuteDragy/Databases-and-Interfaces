@@ -20,11 +20,11 @@
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <title>Admin Index | Student Profile</title>
-    <link rel="stylesheet" href="admin-sidebar.css">
-    <link rel="stylesheet" href="student-profile.css?v=<?php echo filemtime('style.css');?>">
+    <link rel="stylesheet" href="css/admin-sidebar.css">
+    <link rel="stylesheet" href="css/student-profile.css?v=<?php echo filemtime('style.css');?>">
 </head>
 <body>
     <div class="sidebar" id="mySidebar">
@@ -72,7 +72,7 @@
                     <img src="image/search-icon.png" height="12" width="12">
                     <input type="text" placeholder="Search students..." id="search_term" name="search_term">
                 </div>
-                <div id="add-button"><a>+ Add New Student</a></div>
+                <div id="add-button"><a href="add-student.php">+ Add New Student</a></div>
             </div>
         </div>
 
@@ -115,17 +115,6 @@
             </div>
         </div>
     </div>
-
-    <script>
-        function toggleSidebar() {
-            const sidebar = document.getElementById("mySidebar");
-            const overlay = document.getElementById("overlay");
-
-            // Toggle the 'show' class
-            sidebar.classList.toggle("show");
-            overlay.classList.toggle("show");
-        }
-    </script>
-
+    <script src="js/sidebar.js"></script>
 </body>
 </html>
