@@ -1,0 +1,201 @@
+header{
+    background-color: black;
+    color: white;
+    display: flex;
+    width: 100%;
+    font-family: Arial, Helvetica, sans-serif;
+    justify-content: space-between;
+    align-items: center;
+}
+
+body{
+    margin: 0;
+    padding: 0;
+}
+
+#student-header-container{
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+#student-header{
+    width: 150vh;
+    display: flex;
+    justify-content: space-between;
+    align-items: last baseline;
+}
+
+#student-title{
+    line-height: 1.5;
+}
+
+#title{
+    font-weight: bold;
+    font-size: 36px;
+}
+
+#description{
+    font-size: 14px;
+    color: grey;
+    max-width: 50vh;
+}
+
+#function-container{
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+#functions{
+    display: flex;
+    justify-content: space-between;
+    width: 150vh;
+}
+
+#search-bar{
+    background-color: rgb(237, 244, 246);
+    border: none;
+    display: flex;
+    align-items: center;
+    border-radius: 8px;
+    padding: 4px 4px 4px 20px;
+    width: 70%;
+}
+
+#search-bar input{
+    background-color: rgba(237, 244, 246);
+    border: none;
+    padding: 10px 10px 10px 10px;
+    border-radius: 8px;
+    width: 100%;
+}
+
+#search-bar input:focus {
+    outline: none;
+}
+
+#add-button{
+    background-color: rgb(30, 59, 192);
+    border: none;
+    padding: 10px;
+    border-radius: 8px;
+    width: 28vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#add-button a{
+    background-color: rgb(30, 59, 192);
+    color: rgb(236, 236, 236);    
+    border: none;
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+#content-container{
+    display: flex;
+    justify-content: center;
+}
+
+#content{
+    width: 135vh;
+    margin-top: 30px;
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+#content a{
+    text-decoration: none;
+    color: black;
+}
+
+#content a:nth-child(odd) .content-section{
+    width: 38vh;
+    height: 28vh;
+    border-radius: 10px;
+    background-color: white;
+    box-shadow: 2px 4px 6px rgb(197, 197, 197);
+    padding: 20px;
+    line-height: 1.2;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+#content a:nth-child(even) .content-section{
+    width: 38vh;
+    height: 28vh;
+    border-radius: 10px;
+    background-color: rgba(217, 222, 223, 0.637);
+    box-shadow: 2px 4px 6px rgb(197, 197, 197);
+    padding: 20px;
+    line-height: 1.2;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.content-section:hover{
+    transform: translateY(-5px);
+    box-shadow: 4px 8px 12px rgb(161, 161, 161);
+}
+
+.content-row{
+    margin-top: 5px;
+    width: 90%;
+}
+
+.content-row:last-child{
+    margin-top: auto;
+    width: 90%;
+}
+
+.content-row label{
+    font-size: 9px;
+    color: grey;
+    font-weight: bold;
+}
+
+
+.student-name{
+    font-size: 22px;
+    font-weight: bold;
+    padding: 15px 0px;
+}
+
+.label-content-row{
+    display: flex;
+    justify-content: right;
+}
+
+.student-label{
+    font-size: 10px;
+    border-radius: 12.5px;
+    height: fit-content;
+    padding: 2px 6px;
+    background-color: rgb(207, 227, 245);
+    color: grey;
+    font-weight: bold;
+    width: fit-content;
+}
+
+.content-data{
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.email-data{
+    font-size: 12px;
+    color: rgb(30, 34, 145);
+    font-weight: bold;
+    
+}
+

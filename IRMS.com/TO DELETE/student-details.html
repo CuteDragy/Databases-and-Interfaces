@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Index</title>
+    <link rel="stylesheet" href="admin-sidebar.css">
+    <link rel="stylesheet" href="student-details.css">
+</head>
+<body>
+
+    <div class="sidebar" id="mySidebar">
+        <div>
+            <p
+                style="margin-top: 10px; margin-left: 13px; margin-bottom: 3px; line-height: 1; box-sizing: content-box; font-weight: bold; font-size: 27px; font-style: oblique;">
+                Hello, Guest</p>
+        </div>
+        <button class="close-btn" onclick="toggleSidebar()">&times;</button>
+        <div style="margin-top: 35px; font-family:Arial, sans-serif;">
+            <p style="margin-left: 13px; margin-bottom: 3px; line-height: 1; box-sizing: content-box; font-weight: bold; font-size: 26px;">Menu</p>
+            <a href="admin-index.html" id="navigation-button">Home</a>
+            <a href="user-profile.html" id="navigation-button">User Profile</a>
+            <a href="student-profile.html" id="navigation-button">Student Profile</a>
+            <a href="assessor-profile.html" id="navigation-button">Assessor Profile</a>
+            <a href="internships.html" id="navigation-button">Internships</a>
+            <a href="companies.html" id="navigation-button">Companies</a>
+        </div>
+    </div>
+    <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+    <div id="main">
+        <header>
+            <table>
+                <tr>
+                    <td style="padding: 5px;"><button class="menu-btn" onclick="toggleSidebar()">&#9776;</button></td>
+                    <td style="padding-left: 15px;"><h1>Student Details</h1></td>
+                </tr>
+            </table>
+        </header>
+
+        <div class="user-details-container">
+            <div class="user-details">
+                <table>
+                    <tr>
+                        <td id="back-button"><div><a href="student-profile.html">X</a></div></td>
+                        <td id="edit-button"><a href="student-details-edit.html">Edit</a></td>
+                    </tr>
+                </table>
+                <h2 style="text-align: center; text-decoration: underline;">Student Details</h2>
+                <br>
+                <h4><b>Personal Details</b></h4>
+                Student ID:<br>
+                Name:<br>
+                Gender: <br>
+                Date of Birth:<br><hr>
+                <h4><b>Course Details</b></h4>
+                Faculty:<br>
+                Programme:<br><hr>
+                <h4><b>Contact Details</b></h4>
+                Address:<br>
+                Contact No:<br>
+                Emergency Contact No:<br>
+                Emergency Contact Relation:<br>
+                Personal Email:<br>
+                School Email:<br>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById("mySidebar");
+            const overlay = document.getElementById("overlay");
+
+            // Toggle the 'show' class
+            sidebar.classList.toggle("show");
+            overlay.classList.toggle("show");
+        }
+    </script>
+
+</body>
+</html>
