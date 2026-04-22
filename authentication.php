@@ -28,7 +28,8 @@ if ($user && password_verify($password, $user["password"])) {
         mysqli_stmt_bind_param($updateStmt, 'ss', $newHash, $username);
         mysqli_stmt_execute($updateStmt);
     }
-    
+    session_regenerate_id(true);
+
     $_SESSION["user"]   = $user["user_id"];
     $_SESSION["role"]   = $user["role"];
     $success = true;
