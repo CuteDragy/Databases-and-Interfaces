@@ -21,6 +21,14 @@ $destination = "LoginMenu.php";
 $success = false;
 
 if ($user && password_verify($password, $user["password"])) {
+    $hashOptions = ['cost' => 12];
+    if (password_needs_rehash($user["password"], PASSWORD_DEFAULT, $hashOptions)) {
+        $newHash = password_hash($password, PASSWORD_DEFAULT, $hashOptions);
+        $updateStmt = mysqli_prepare($conn, "UPDATE users SET password = ? WHERE user_id = ?");
+        mysqli_stmt_bind_param($updateStmt, 'ss', $newHash, $username);
+        mysqli_stmt_execute($updateStmt);
+    }
+    
     $_SESSION["user"]   = $user["user_id"];
     $_SESSION["role"]   = $user["role"];
     $success = true;
