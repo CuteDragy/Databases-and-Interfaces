@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Index</title>
+    <link rel="stylesheet" href="../admin-sidebar.css">
+    <link rel="stylesheet" href="../student-profile.css">
+</head>
+<body>
+
+    <div class="sidebar" id="mySidebar">
+        <div>
+            <p
+                style="margin-top: 10px; margin-left: 13px; margin-bottom: 3px; line-height: 1; box-sizing: content-box; font-weight: bold; font-size: 27px; font-style: oblique;">
+                Hello, Guest</p>
+        </div>
+        <button class="close-btn" onclick="toggleSidebar()">&times;</button>
+        <div style="margin-top: 35px; font-family:Arial, sans-serif;">
+            <p style="margin-left: 13px; margin-bottom: 3px; line-height: 1; box-sizing: content-box; font-weight: bold; font-size: 26px;">Menu</p>
+            <a href="admin-index.html" id="navigation-button">Home</a>
+            <a href="user-profile.html" id="navigation-button">User Profile</a>
+            <a href="student-profile.html" id="navigation-button">Student Profile</a>
+            <a href="assessor-profile.html" id="navigation-button">Assessor Profile</a>
+            <a href="internships.html" id="navigation-button">Internships</a>
+            <a href="companies.html" id="navigation-button">Companies</a>
+        </div>
+    </div>
+    <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+    <div id="main">
+        <header>
+            <table>
+                <tr>
+                    <td style="padding: 5px;"><button class="menu-btn" onclick="toggleSidebar()">&#9776;</button></td>
+                    <td style="padding-left: 15px;"><h1>Student Profiles</h1></td>
+                </tr>
+            </table>
+        </header>
+
+        <div class="student-profile-container">
+            <div class="student-profile">
+                <table>
+                    <tr>
+                        <th>Student ID</th>
+                        <th>Name</th>
+                        <th>Programme</th>
+                        <th>School Email</th>
+                    </tr>
+                    <tr> 
+                        <td>12345</td>
+                        <td>Poong Zhi Yong</td>
+                        <td>Social Science </td>
+                        <td>hfyhs12@nottingham.edu.my</td>
+                        <td> <a href='#'> Edit </a>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById("mySidebar");
+            const overlay = document.getElementById("overlay");
+
+            // Toggle the 'show' class
+            sidebar.classList.toggle("show");
+            overlay.classList.toggle("show");
+        }
+    </script>
+
+</body>
+</html>
