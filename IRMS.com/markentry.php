@@ -1,33 +1,34 @@
 <?php
 session_start();
-include 'db.php';
-
-// Temporary test - remove later
-$_SESSION['user_id'] = 1;
-$_SESSION['name'] = 'Test User';
-
-// Redirect if not logged in
-if (!isset($_SESSION['user_id'])) {
-   // header("Location: LoginMenu.html");
-    //exit();
+$dbName     = 'internship_management';
+$serverName = 'localhost';
+$dbUser     = 'root';
+$dbPassword = 'root';
+$conn = new mysqli($serverName, $dbUser, $dbPassword, $dbName);
+if ($conn->connect_error) {
+    die("Database connection failed: " . mysqli_connect_error());
 }
 
-$assessor_id = $_SESSION['user_id'];
+$assessor_id = 1;
 
 // Fetch students assigned to this assessor
 $query = "
     SELECT s.student_id, s.name, i.internship_id,
-        'lecturer' AS role
+        CASE 
+            WHEN i.internal_assessor_id = ? THEN 'lecturer'
+            WHEN i.external_assessor_id = ? THEN 'supervisor'
+        END AS role
     FROM students s
     JOIN internships i ON s.student_id = i.student_id
-    WHERE i.assessor_id = ?
+    WHERE i.internal_assessor_id = ? OR i.external_assessor_id = ?
 ";
 
-$stmt = mysqli_prepare($conn, $query);
-mysqli_stmt_bind_param($stmt, "i", $assessor_id);
-mysqli_stmt_execute($stmt);
-$result = mysqli_stmt_get_result($stmt);
-$students = mysqli_fetch_all($result, MYSQLI_ASSOC);
+$stmt = $conn->prepare($query);
+$stmt->bind_param("iiii", $assessor_id, $assessor_id, $assessor_id, $assessor_id);
+$stmt->execute();
+$result = $stmt->get_result();
+$students = $result->fetch_all(MYSQLI_ASSOC);
+
 ?>
 
 <!DOCTYPE html>
@@ -41,7 +42,7 @@ $students = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
     <!-- Sidebar -->
     <div class="sidebar" id="mySidebar">
-        <p class="sidebar-greeting">Hello, <?= htmlspecialchars($_SESSION['name'] ?? 'Guest') ?></p>
+        <p class="sidebar-greeting">Hello, Test User</p>
         <button class="close-btn" onclick="toggleSidebar()">&times;</button>
         <div class="sidebar-menu">
             <p class="sidebar-menu-title">Menu</p>
@@ -73,15 +74,17 @@ $students = mysqli_fetch_all($result, MYSQLI_ASSOC);
                 </div>
                 <div class="card-body">
                     <div class="field-group">
-                        <label>ROLE</label>
-                        <div id="roleDisplay" style="font-size:15px; padding: 12px 16px; background:#f0f2f5; border-radius:8px;">
-                            — detected automatically —
-                        </div>
+                        <label for="roleSelect">ROLE</label>
+                        <select id="roleSelect" onchange="onRoleChange()">
+                            <option value="">-- Select a role --</option>
+                            <option value="lecturer">Lecturer</option>
+                            <option value="supervisor">Industry Supervisor</option>
+                        </select>
                         <input type="hidden" id="roleValue" value="">
                     </div>
                     <div class="field-group">
                         <label for="studentSelect">SELECT STUDENT</label>
-                        <select id="studentSelect" onchange="detectRole()">
+                        <select id="studentSelect">
                             <option value="">-- Select a student --</option>
                             <?php foreach ($students as $student): ?>
                                 <option value="<?= $student['student_id'] ?>"
@@ -96,7 +99,7 @@ $students = mysqli_fetch_all($result, MYSQLI_ASSOC);
             </div>
 
             <!-- Assessment Table -->
-            <table id="assessmentTable">
+            <table id="assessmentTable" style="display:none;">
                 <thead>
                     <tr>
                         <th>Component</th>
@@ -121,7 +124,7 @@ $students = mysqli_fetch_all($result, MYSQLI_ASSOC);
             <!-- Buttons -->
             <div class="submit-area">
                 <button onclick="resetForm()">Reset</button>
-                <button id="submitBtn" onclick="submitAssessment()">Save Assessment</button>
+                <button id="submitBtn" onclick="submitAssessment()" style="display:none;">Save Assessment</button>
             </div>
 
         </div>
@@ -134,31 +137,14 @@ $students = mysqli_fetch_all($result, MYSQLI_ASSOC);
             document.getElementById("overlay").classList.toggle("show");
         }
 
-        function detectRole() {
-            const select = document.getElementById("studentSelect");
-            const selected = select.options[select.selectedIndex];
-            const role = selected.getAttribute("data-role");
-            const internshipId = selected.getAttribute("data-internship");
-
-            const roleDisplay = document.getElementById("roleDisplay");
-            const roleValue = document.getElementById("roleValue");
-
-            if (role === "lecturer") {
-                roleDisplay.textContent = "Lecturer";
-                roleValue.value = "lecturer";
-            } else if (role === "supervisor") {
-                roleDisplay.textContent = "Industry Supervisor";
-                roleValue.value = "supervisor";
-            } else {
-                roleDisplay.textContent = "— detected automatically —";
-                roleValue.value = "";
-            }
-
-            document.getElementById("assessmentTable").setAttribute("data-internship", internshipId || "");
+        function onRoleChange() {
+            const role = document.getElementById("roleSelect").value;
+            document.getElementById("roleValue").value = role;
 
             if (role) {
                 document.getElementById("assessmentTable").style.display = "table";
                 document.getElementById("submitBtn").style.display = "inline-block";
+                buildAssessmentTable();
             } else {
                 document.getElementById("assessmentTable").style.display = "none";
                 document.getElementById("submitBtn").style.display = "none";
