@@ -112,11 +112,9 @@ function submitAssessment() {
     const studentId = document.getElementById("studentSelect").value;
     const role = document.getElementById("roleValue").value;
     const internshipId = document.getElementById("assessmentTable").getAttribute("data-internship");
-}
-    if (role) {
-    document.getElementById("assessmentTable").style.display = "table";
-    document.getElementById("submitBtn").style.display = "inline-block";
-    buildAssessmentTable();
+
+    if (!studentId) { alert("Please select a student"); return; }
+    if (!role) { alert("Role could not be detected"); return; }
 
     const rows = document.querySelectorAll("#assessmentBody tr");
     let data = [];
