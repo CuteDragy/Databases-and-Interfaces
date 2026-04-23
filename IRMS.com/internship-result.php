@@ -74,7 +74,7 @@
                     <td style="padding-left: 15px;"><h1>Student Profiles</h1></td>
                 </tr>
             </table>
-            <div><a href="#" title="Logout"><img src="image/logout-button.png" width="50" height="50"></a></div>
+            <div><a href="logout.php" title="Logout"><img src="image/logout-button.png" width="50" height="50"></a></div>
         </header>
         <div id="back-button-container">
             <div id="back-button">
