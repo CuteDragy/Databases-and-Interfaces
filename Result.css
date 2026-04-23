@@ -173,6 +173,7 @@ body {
     box-shadow 0.1s;
   position: relative;
   gap: 12px;
+  background: #ffffff;
 }
 .result-item:last-child {
   border-bottom: none;
@@ -183,17 +184,26 @@ body {
   z-index: 1;
 }
 .result-item.active-row {
-  background: #e8f0fe;
+  background: #e8e8e8;
 }
 .result-item.unread {
-  background: #fff;
+  background: #f8f9fa;
 }
 .result-item.unread .item-company,
 .result-item.unread .item-subject {
   font-weight: 700;
 }
 .result-item.read {
-  background: #f8f9fa;
+  background: #e8e8e8;
+}
+
+#detailOverlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 99;
+  background: transparent;
+  cursor: default;
 }
 
 .item-star {
@@ -454,7 +464,7 @@ body {
 
 .score-bar {
   height: 100%;
-  background: linear-gradient(90deg, #1a73e8, #34a853);
+  background: linear-gradient(90deg, #ac0000, #ffff00, #ffff00, #3fc964);
   border-radius: 99px;
   width: 0%;
 }
