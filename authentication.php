@@ -42,7 +42,7 @@ if ($user && password_verify($password, $user["password"])) {
             $destination = "admin-index.php";
             break;
         case "Assessor":
-            $destination = "assessor-index.php";
+            $destination = "markentry.php";
             break;
         default:
             $_SESSION["error"] = "Unknown role. Please contact the administration department.";
