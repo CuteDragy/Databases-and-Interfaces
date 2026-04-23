@@ -1,153 +1,182 @@
-const components = [
-    { name: "Undertaking Tasks/Projects", weight: 10, desc: "Ability to undertake and complete assigned tasks." },
-    { name: "Health and Safety Requirements at the Workplace", weight: 10, desc: "Adherence to health and safety standards." },
-    { name: "Connectivity and Use of Theoretical Knowledge", weight: 10, desc: "Application of academic knowledge in practice." },
-    { name: "Presentation of the Report as a Written Document", weight: 15, desc: "Quality, structure, and clarity of written report." },
-    { name: "Clarity of Language and Illustration", weight: 10, desc: "Clear communication and use of visuals." },
-    { name: "Lifelong Learning Activities", weight: 15, desc: "Engagement in self-directed learning." },
-    { name: "Project Management", weight: 15, desc: "Planning, organizing, and managing project tasks." },
-    { name: "Time Management", weight: 15, desc: "Punctuality, deadlines, and efficient use of time." }
-];
+/**
+ * assessor.js
+ * Handles rendering the assessment criteria table and submitting marks to save_assessment.php
+ */
 
-let currentRole = "";
-let scores = {};
+// ── Criteria definitions ─────────────────────────────────────────────────────
+// Adjust components and weights to match your actual rubric.
+// Weights should sum to 100.
 
-function buildAssessmentTable() {
+const CRITERIA = {
+    lecturer: [
+        { component: "Technical Knowledge",        weight: 20 },
+        { component: "Problem Solving Skills",     weight: 20 },
+        { component: "Communication Skills",       weight: 15 },
+        { component: "Professionalism & Attitude", weight: 15 },
+        { component: "Report / Documentation",     weight: 15 },
+        { component: "Overall Progress",           weight: 15 },
+    ],
+    supervisor: [
+        { component: "Work Quality",               weight: 25 },
+        { component: "Punctuality & Discipline",   weight: 15 },
+        { component: "Teamwork & Cooperation",     weight: 20 },
+        { component: "Initiative",                 weight: 20 },
+        { component: "Technical Competency",       weight: 20 },
+    ],
+};
+
+// ── Render table rows for the selected role ──────────────────────────────────
+function renderAssessmentTable(role) {
     const tbody = document.getElementById("assessmentBody");
     tbody.innerHTML = "";
 
-    components.forEach((comp, index) => {
-        const row = document.createElement("tr");
-        row.innerHTML = `
-            <td class="comp-cell">
-                <div class="comp-name">${comp.name}</div>
-                <div class="comp-desc">${comp.desc}</div>
+    const rows = CRITERIA[role];
+    if (!rows) return;
+
+    rows.forEach((item, index) => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+            <td>${item.component}</td>
+            <td>${item.weight}%</td>
+            <td>
+                <select class="score-select" data-index="${index}" onchange="recalculate()">
+                    <option value="">--</option>
+                    <option value="1">1 – Poor</option>
+                    <option value="2">2 – Below Average</option>
+                    <option value="3">3 – Average</option>
+                    <option value="4">4 – Good</option>
+                    <option value="5">5 – Excellent</option>
+                </select>
             </td>
-            <td class="weight-cell">
-                <span class="weight-badge">${comp.weight}%</span>
-                <div class="weight-label">relative weight</div>
-            </td>
-            <td class="score-cell">
-                <div class="score-buttons" id="scoreButtons-${index}">
-                    ${[1,2,3,4,5].map(n => `
-                        <button type="button" class="score-btn" onclick="selectScore(${index}, ${n})">${n}</button>
-                    `).join("")}
-                </div>
-            </td>
-            <td class="weighted-cell" id="weighted-${index}">
-                <span class="weighted-value">—</span>
-            </td>
-            <td class="note-cell">
-                <textarea class="eval-note" placeholder="Add evaluation notes..."></textarea>
+            <td class="weighted-cell" id="weighted-${index}">0.00</td>
+            <td>
+                <textarea class="notes-input" data-index="${index}" rows="2"
+                    placeholder="Optional remarks..."></textarea>
             </td>
         `;
-        tbody.appendChild(row);
-    });
-}
-
-function selectScore(index, value) {
-    scores[index] = value;
-
-    // Update button styles
-    const buttons = document.querySelectorAll(`#scoreButtons-${index} .score-btn`);
-    buttons.forEach(btn => {
-        btn.classList.remove("selected");
-        if (parseInt(btn.textContent) === value) {
-            btn.classList.add("selected");
-        }
+        tbody.appendChild(tr);
     });
 
-    // Update weighted contribution
-    const weight = components[index].weight;
-    const weighted = ((value / 5) * weight).toFixed(1);
-    const weightedCell = document.getElementById(`weighted-${index}`);
-    weightedCell.innerHTML = `<span class="weighted-value active">${weighted}%</span><span class="weighted-max"> / ${weight}%</span>`;
-
-    calculateTotal();
+    recalculate();
 }
 
-function calculateTotal() {
+// ── Recalculate weighted contributions and total ─────────────────────────────
+function recalculate() {
+    const role = document.getElementById("roleValue").value;
+    const rows = CRITERIA[role] || [];
     let total = 0;
-    components.forEach((comp, index) => {
-        if (scores[index]) {
-            total += (scores[index] / 5) * comp.weight;
-        }
+
+    document.querySelectorAll(".score-select").forEach((sel, index) => {
+        const score  = parseFloat(sel.value) || 0;
+        const weight = rows[index]?.weight || 0;
+        // Weighted contribution = (score / 5) * weight
+        const weighted = (score / 5) * weight;
+        total += weighted;
+
+        const cell = document.getElementById(`weighted-${index}`);
+        if (cell) cell.textContent = weighted.toFixed(2);
     });
+
     document.getElementById("totalScore").textContent = total.toFixed(2);
 }
 
-function updateRole() {
-    currentRole = document.getElementById("roleSelect").value;
-    const table = document.getElementById("assessmentTable");
-    const submitBtn = document.getElementById("submitBtn");
+// ── Called by detectRole() in markentry.php after role is resolved ───────────
+// Wrap detectRole to also render the table (call this from the inline script)
+function onRoleDetected(role) {
+    if (role) {
+        renderAssessmentTable(role);
+        document.getElementById("assessmentTable").style.display = "table";
+        document.getElementById("submitBtn").style.display = "inline-block";
+    } else {
+        document.getElementById("assessmentBody").innerHTML = "";
+        document.getElementById("totalScore").textContent = "0.00";
+        document.getElementById("assessmentTable").style.display = "none";
+        document.getElementById("submitBtn").style.display = "none";
+    }
+}
 
-    if (!currentRole) {
-        table.style.display = "none";
-        submitBtn.style.display = "none";
+// ── Reset form to initial state ──────────────────────────────────────────────
+function resetForm() {
+    document.getElementById("studentSelect").value = "";
+    document.getElementById("roleDisplay").textContent = "— detected automatically —";
+    document.getElementById("roleValue").value = "";
+    document.getElementById("assessmentBody").innerHTML = "";
+    document.getElementById("totalScore").textContent = "0.00";
+    document.getElementById("assessmentTable").style.display = "none";
+    document.getElementById("assessmentTable").removeAttribute("data-internship");
+    document.getElementById("submitBtn").style.display = "none";
+}
+
+// ── Collect and submit assessment data ───────────────────────────────────────
+async function submitAssessment() {
+    const role         = document.getElementById("roleValue").value;
+    const internshipId = document.getElementById("assessmentTable").getAttribute("data-internship");
+    const totalScore   = parseFloat(document.getElementById("totalScore").textContent);
+
+    // ── Guard: student must be selected ──────────────────────────────────────
+    if (!internshipId || !role) {
+        alert("Please select a student before saving.");
         return;
     }
 
-    table.style.display = "table";
-    submitBtn.style.display = "inline-block";
-}
-
-function resetForm() {
-    scores = {};
-    document.querySelectorAll(".score-btn").forEach(btn => btn.classList.remove("selected"));
-    document.querySelectorAll(".eval-note").forEach(t => t.value = "");
-    document.querySelectorAll(".weighted-value").forEach(el => {
-        el.textContent = "—";
-        el.classList.remove("active");
+    // ── Guard: all scores must be filled ─────────────────────────────────────
+    const scoreSelects = document.querySelectorAll(".score-select");
+    let allFilled = true;
+    scoreSelects.forEach(sel => {
+        if (!sel.value) allFilled = false;
     });
-    document.querySelectorAll(".weighted-max").forEach(el => el.remove());
-    document.getElementById("studentSelect").value = "";
-    document.getElementById("roleSelect").value = "";
-    document.getElementById("totalScore").textContent = "0.00";
-    document.getElementById("assessmentTable").style.display = "none";
-    document.getElementById("submitBtn").style.display = "none";
-    currentRole = "";
-}
+    if (!allFilled) {
+        alert("Please fill in a score for every component before saving.");
+        return;
+    }
 
-function submitAssessment() {
-    const studentId = document.getElementById("studentSelect").value;
-    const role = document.getElementById("roleValue").value;
-    const internshipId = document.getElementById("assessmentTable").getAttribute("data-internship");
+    // ── Build criteria payload ────────────────────────────────────────────────
+    const criteriaRows = CRITERIA[role] || [];
+    const criteria = [];
 
-    if (!studentId) { alert("Please select a student"); return; }
-    if (!role) { alert("Role could not be detected"); return; }
-
-    const rows = document.querySelectorAll("#assessmentBody tr");
-    let data = [];
-
-    rows.forEach((row, index) => {
-        const comment = row.querySelector(".eval-note").value;
-        data.push({
-            component: components[index].name,
-            score: scores[index] || 0,
-            comment: comment
+    scoreSelects.forEach((sel, index) => {
+        const notesEl = document.querySelectorAll(".notes-input")[index];
+        criteria.push({
+            component:     criteriaRows[index].component,
+            weight:        criteriaRows[index].weight,
+            score:         parseInt(sel.value),
+            weighted_score: parseFloat(document.getElementById(`weighted-${index}`).textContent),
+            notes:         notesEl ? notesEl.value.trim() : "",
         });
     });
 
-    fetch("submitmark.php", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-            student_id: studentId,
-            internship_id: internshipId,
-            role: role,
-            assessment: data,
-            total: document.getElementById("totalScore").textContent
-        })
-    })
-    .then(res => res.json())
-    .then(result => {
+    const payload = {
+        internship_id: parseInt(internshipId),
+        role:          role,
+        total_score:   totalScore,
+        criteria:      criteria,
+    };
+
+    // ── Disable button to prevent double-submit ───────────────────────────────
+    const btn = document.getElementById("submitBtn");
+    btn.disabled = true;
+    btn.textContent = "Saving…";
+
+    try {
+        const response = await fetch("save_assessment.php", {
+            method:  "POST",
+            headers: { "Content-Type": "application/json" },
+            body:    JSON.stringify(payload),
+        });
+
+        const result = await response.json();
+
         if (result.success) {
-            alert("Assessment saved successfully!");
+            alert(`Assessment saved!\nAssessment ID: ${result.assessment_id}\nTotal Score: ${result.total_score.toFixed(2)}`);
+            // Optionally reset after a successful save:
+            // resetForm();
         } else {
             alert("Error: " + result.message);
         }
-    })
-    .catch(err => {
-        alert("Submission failed: " + err);
-    });
+    } catch (err) {
+        alert("Network error. Please try again.\n" + err.message);
+    } finally {
+        btn.disabled = false;
+        btn.textContent = "Save Assessment";
+    }
 }
