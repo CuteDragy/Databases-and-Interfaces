@@ -1,6 +1,7 @@
 <?php 
     session_start();
     include('db.php');
+    include('auth-check.php');
 ?>
 
 <!DOCTYPE html>
@@ -44,7 +45,7 @@
                     <td style="padding-left: 15px;"><h1>User Profile</h1></td>
                 </tr>
             </table>
-            <div><a href="#" title="Logout"><img src="image/logout-button.png" width="50" height="50" style="margin-right:15px;"></a></div>
+            <div><a href="logout.php" title="Logout"><img src="image/logout-button.png" width="50" height="50" style="margin-right:15px;"></a></div>
         </header>
 
         

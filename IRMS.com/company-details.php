@@ -1,6 +1,7 @@
 <?php 
     session_Start();
     include('db.php');
+    include('auth-check.php');
 
     $condition = "where user_id = 12345 ";
     $instruction = "select * from users $condition";
@@ -55,7 +56,7 @@
                     <td style="padding-left: 15px;"><h1>Company Details</h1></td>
                 </tr>
             </table>
-            <div><a href="#" title="Logout"><img src="image/logout-button.png" width="50" height="50"></a></div>
+            <div><a href="logout.php" title="Logout"><img src="image/logout-button.png" width="50" height="50"></a></div>
         </header>
 
         <div id="company-detail-header">

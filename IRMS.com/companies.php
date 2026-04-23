@@ -1,6 +1,8 @@
 <?php 
     session_start();
     include('db.php');
+    include('auth-check.php');
+    
     $condition = "where user_id = 12345 ";
     $instruction = "select * from users $condition";
     $action = mysqli_query($conn, $instruction) or die(mysqli_error($conn));

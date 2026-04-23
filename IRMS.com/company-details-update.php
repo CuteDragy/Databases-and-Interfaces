@@ -20,12 +20,14 @@
                             $company_email, $company_address, $company_id);
 
         if($stmt->execute()){
-            header("Location: company-details.php?companyid=" . urlencode($company_id) . "&status=updated");
+            $stmt->close();
+            header("Location: companies.php?companyid=" . urlencode($company_id) . "&status=updated");
             exit();
         } else {
-            echo "Error updating record: " . $stmt->error;
+            $error = $stmt->error;
+            $stmt->close();
+            header("Location: company-details-edit.php?companyid=" . urlencode($company_id) . "&status=error&msg=" . urlencode("Failed to update company details " . $error));
+            exit();
         }
-
-        $stmt->close();
     }
 ?>

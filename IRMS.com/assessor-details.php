@@ -1,6 +1,7 @@
 <?php 
     session_start();
     include('db.php');
+    include('auth-check.php');
 
     $condition = "where user_id = 12345 ";
     $instruction = "select * from users $condition";
@@ -61,7 +62,7 @@
                     <td style="padding-left: 15px;"><h1>Assessor Details</h1></td>
                 </tr>
             </table>
-            <div><a href="#" title="Logout"><img src="image/logout-button.png" width="50" height="50"></a></div>
+            <div><a href="logout.php" title="Logout"><img src="image/logout-button.png" width="50" height="50"></a></div>
         </header>
 
         <div id="assessor-detail-header">
@@ -126,8 +127,7 @@
                             </div>
                             <div>
                                 <label for="passwords">PASSWORD</label>
-                                <input type="password" id="passwords" name="passwords" value="<?php echo $assessor_details['passwords']?>"
-                                    readonly style="cursor: not-allowed"><br>
+                                <input type="password" id="passwords" name="passwords" readonly style="cursor: not-allowed"><br>
                             </div>
                             <div>
                                 <label for="organization">ORGANIZATION</label>

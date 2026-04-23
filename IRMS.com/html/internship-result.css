@@ -1,0 +1,175 @@
+header{
+    background-color: black;
+    color: white;
+    display: flex;
+    width: 100%;
+    font-family: Arial, Helvetica, sans-serif;
+    justify-content: space-between;
+    align-items: center;
+}
+
+body{
+    margin: 0;
+    padding: 0;
+}
+
+#back-button-container{
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+#back-button{
+    width: 150vh;
+    display: flex;
+    justify-content: left;
+}
+
+#back-button a{
+    text-decoration: none;
+    color: black;
+}
+
+#back-button a:hover{
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+#student-header-container{
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+#student-header{
+    border: 1px solid black;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 150vh;
+    padding: 10px;
+    box-shadow: 2px 4px 6px rgb(177, 175, 175);
+}
+
+#name{
+    font-weight: bold;
+    font-size: 26px;
+    margin-top: 10px;
+}
+
+#student-info{
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+}
+
+#student-info label, #student-name label, #marks label{
+    font-size: 12px;
+    font-weight: bold;
+    color: rgb(137, 137, 104);
+}
+
+#student-info{
+    font-size: 17px;
+    font-weight: bold;
+    color: rgb(1, 1, 83);
+}
+
+#content-container{
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+#content table{
+    width: 153vh;
+    border: 1px solid black;
+    margin: 10px;
+    border-collapse: collapse;
+}
+
+#content th{
+    font-size: 12px;
+    font-weight: bold;
+}
+
+#content #title{
+    font-weight: bold;
+    font-size: 23px;
+    color: rgb(0, 0, 97);
+    padding: 15px;
+    text-align: left;
+    padding-bottom: 20px;
+    padding-top: 20px;
+}
+
+button{
+    border-color: black;
+    padding: 4px;
+    background-color: white;
+    font-weight: bold;
+}
+
+button:hover{
+    cursor: pointer;
+}
+
+#content th{
+    padding: 12px;
+}
+
+#content th:first-child{
+    text-align: left;
+}
+
+#content td{
+    padding: 12px;
+    text-align: center;
+}
+
+#content .category{
+    text-align: left;
+}
+
+#content tr:nth-child(even) {
+  background-color: #f2f2f2;
+  border: none;
+}
+
+#content tr:nth-child(odd) {
+  background-color: #ffffff;
+  border: none;
+}
+
+#content tr:first-child{
+    background-color: rgb(228, 228, 228);
+}
+
+#finalized-result-container{
+    display: flex;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+#finalized-result{
+    width: 153vh;
+    display: flex;
+    justify-content: right;
+}
+
+#marks{
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.mark-container{
+    padding: 10px;
+    border: 1px solid black;
+    width: 25vh;
+}
+
+.mark{
+    font-weight: bold;
+    font-size: 35px;
+}

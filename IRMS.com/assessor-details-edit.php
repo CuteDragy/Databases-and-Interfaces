@@ -1,6 +1,7 @@
 <?php 
     session_start();
     include('db.php');
+    include('auth-check.php');
 
     $condition = "where user_id = 12345 ";
     $instruction = "select * from users $condition";
@@ -22,6 +23,7 @@
     <link rel="stylesheet" href="css/admin-sidebar.css">
     <link rel="stylesheet" href="css/assessor-details-edit.css?v=<?php echo filemtime('style.css');?>">
     <link rel="stylesheet" href="css/formCheck.css">
+    <?php include('error-function.php'); ?>
 </head>
 <body>
 
@@ -52,7 +54,7 @@
                     <td style="padding-left: 15px;"><h1>Editting Assessor Details</h1></td>
                 </tr>
             </table>
-            <div><a href="#" title="Logout"><img src="image/logout-button.png" width="50" height="50"></a></div>
+            <div><a href="logout.php" title="Logout"><img src="image/logout-button.png" width="50" height="50"></a></div>
         </header>
 
         <div class="assessor-details-edit-container">
@@ -74,7 +76,7 @@
                             <input type="text" id="role" name="role" value="Assessor" readonly><br>
                             <span class="error-msg" id="error-passwords"></span>
                             <label for="passwords">PASSWORD</label>
-                            <input type="password" id="passwords" name="passwords" value="<?php echo $assessor_details['passwords'] ?>"><br>
+                            <input type="password" id="passwords" name="passwords"><br>
                             <span class="error-msg" id="error-email"></span>
                             <label for="email">EMAIL</label>
                             <input type="text" id="email" name="email" value="<?php echo $assessor_details['email'] ?>"><br>

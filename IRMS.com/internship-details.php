@@ -2,6 +2,7 @@
     session_Start();
     include('db.php');
     include('internship-details-result-calculation.php');
+    include('auth-check.php');
 
     $condition = "where user_id = 12345 ";
     $instruction = "select * from users $condition";
@@ -59,6 +60,7 @@
     <link rel="stylesheet" href="css/admin-sidebar.css">
     <link rel="stylesheet" href="css/internship-details.css?v=<?php echo filemtime('style.css');?>">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <?php include('error-function.php'); ?>
 </head>
 <body>
 
@@ -89,7 +91,7 @@
                     <td style="padding-left: 15px;"><h1>Internship Details</h1></td>
                 </tr>
             </table>
-            <div><a href="#" title="Logout"><img src="image/logout-button.png" width="50" height="50"></a></div>
+            <div><a href="logout.php" title="Logout"><img src="image/logout-button.png" width="50" height="50"></a></div>
         </header>
 
         <div id="internship-detail-header">
@@ -173,7 +175,7 @@
                     </div>
                 </div>
                 <div id="main-content-right-container">
-                    <a href="#" id="view-result-details" title="MORE DETAILS">
+                    <a href="internship-result.php?internshipid=<?php echo $internship_id; ?>" id="view-result-details" title="MORE DETAILS">
                         <div class="content-row">
                             <div id="result-overview">
                                 <div class="section-header">RESULT OVERVIEW</div>
@@ -208,7 +210,12 @@
             </div>
         </div>
 
-    <script src="js/sidebar.js"></script>    
+    <script src="js/sidebar.js"></script>   
+    <?php if ($error_msg): ?>
+    <script>
+        window.alert("<?php echo $error_msg; ?>");
+    </script>
+    <?php endif; ?> 
     <script>
         const ctx = document.getElementById('myRadarChart').getContext('2d');
 
