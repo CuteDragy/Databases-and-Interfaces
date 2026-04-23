@@ -1,4 +1,6 @@
 <?php
-$hash = password_hash('qwert', PASSWORD_DEFAULT);
+$password = '1002';
+$hash = password_hash($password, PASSWORD_DEFAULT);
+echo "Your new hash for $password is:<br><br>";
 echo $hash;
 ?>
