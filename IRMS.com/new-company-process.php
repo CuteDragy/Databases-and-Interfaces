@@ -20,12 +20,14 @@
                             $company_email, $company_address);
 
         if($stmt->execute()){
-            header("Location: companies.php?companyid=" . urlencode($company_id) . "&status=successful");
+            $stmt->close();
+            header("Location: companies.php?companyid=" . urlencode($company_id) . "&status=success");
             exit();
         } else {
-            echo "Error updating record: " . $stmt->error;
+            $error = $stmt->error;
+            $stmt->close();
+            header("Location: new-company.php?status=error&msg=" . urlencode("Failed to create company record " . $error));
+            exit();
         }
-
-        $stmt->close();
     }
 ?>

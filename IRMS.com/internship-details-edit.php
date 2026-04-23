@@ -1,6 +1,7 @@
 <?php 
     session_Start();
     include('db.php');
+    include('auth-check.php');
 
     $condition = "where user_id = 12345 ";
     $instruction = "select * from users $condition";
@@ -25,6 +26,7 @@
     <link rel="stylesheet" href="css/admin-sidebar.css">
     <link rel="stylesheet" href="css/internship-details-edit.css?v=<?php echo filemtime('style.css');?>">
     <link rel="stylesheet" href="css/formCheck.css">
+    <?php include('error-function.php'); ?>
 </head>
 <body>
 
@@ -55,7 +57,7 @@
                     <td style="padding-left: 15px;"><h1>Editting Internship Details</h1></td>
                 </tr>
             </table>
-            <div><a href="#" title="Logout"><img src="image/logout-button.png" width="50" height="50"></a></div>
+            <div><a href="logout.php" title="Logout"><img src="image/logout-button.png" width="50" height="50"></a></div>
         </header>
 
         <div class="internship-details-container">

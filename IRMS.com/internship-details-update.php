@@ -21,12 +21,14 @@
                             $current_status, $internship_id);
 
         if($stmt->execute()){
-            header("Location: internship-details.php?internshipid=" . urlencode($internship_id) . "&status=updated");
+            $stmt->close();
+            header("Location: internships.php?internshipid=" . urlencode($internship_id) . "&status=updated");
             exit();
         } else {
-            echo "Error updating record: " . $stmt->error;
+            $error = $stmt->error;
+            $stmt->close();
+            header("Location: internship-details-edit.php?internshipid=" . urlencode($internship_id) . "&status=error&msg=" . urlencode("Failed to update internship record " . $error));
+            exit();
         }
-
-        $stmt->close();
     }
 ?>

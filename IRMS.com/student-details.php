@@ -1,6 +1,7 @@
 <?php 
     session_Start();
     include('db.php');
+    include('auth-check.php');
 
     $condition = "where user_id = 12345 ";
     $instruction = "select * from users $condition";
@@ -24,6 +25,7 @@
     <title>Admin Index | Student Details</title>
     <link rel="stylesheet" href="css/admin-sidebar.css">
     <link rel="stylesheet" href="css/student-details.css?v=<?php echo filemtime('style.css');?>">
+    <?php include('error-function.php'); ?>
 </head>
 <body>
 
@@ -54,7 +56,7 @@
                     <td style="padding-left: 15px;"><h1>Student Details</h1></td>
                 </tr>
             </table>
-            <div><a href="#" title="Logout"><img src="image/logout-button.png" width="50" height="50"></a></div>
+            <div><a href="logout.php" title="Logout"><img src="image/logout-button.png" width="50" height="50"></a></div>
         </header>
 
         <div id="student-detail-header">
@@ -68,8 +70,17 @@
                         </tr>
                     </table> 
                 </div>
-                <div style="padding-right: 20px;"><?php echo "<a href='student-details-edit.php?studentid=". $student_id . 
-                    "' style='text-decoration:none; color:black;'>EDIT</a>"?></div>
+                <div id="function">
+                    <div id="back-button"><?php echo "<a href='student-details-edit.php?studentid=". $student_id . 
+                        "' style='text-decoration:none; color:black;'>EDIT</a>"?></div>
+                    <div id="delete-button">
+                        <form method="POST" action="student-delete.php" 
+                            onsubmit="return confirm('Are you sure you want to delete this student record? This cannot be undone.');">
+                            <input type="hidden" name="studentid" value="<?php echo $student_id; ?>">
+                            <button type="submit">DELETE</button>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
 

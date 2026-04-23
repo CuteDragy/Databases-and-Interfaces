@@ -1,5 +1,6 @@
 <?php 
     include('db.php');
+    include('auth-check.php');
 
     if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submit-button"])){
         $student_id = $_POST['student_id'];
@@ -26,12 +27,14 @@
                             $student_id);
 
         if($stmt->execute()){
-            header("Location: student-details.php?studentid=" . urlencode($student_id) . "&status=updated");
+            $stmt->close();
+            header("Location: student-profile.php?id=" . urlencode($student_id) . "&status=updated");
             exit();
         } else {
-            echo "Error updating record: " . $stmt->error;
+            $error = $stmt->error;
+            $stmt->close();
+            header("Location: student-details-edit.php?studentid=" . urlencode($student_id) . "&status=error&msg=" . urlencode("Failed to update student record " . $error));
+            exit();
         }
-
-        $stmt->close();
     }
 ?>

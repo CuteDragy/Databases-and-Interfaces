@@ -22,10 +22,14 @@
                         $company_id, $startDate, $endDate, $duration, $current_status);
 
         if($stmt->execute()){
-            header("Location: internships.php?internshipid=" . urlencode($internship_id) . "&status=success");
+            $stmt->close();
+            header("Location: internships.php?id=" . urlencode($internship_id) . "&status=success");
             exit();
         } else {
-            echo "Error updating record: " . $stmt->error;
+            $error = $stmt->error;
+            $stmt->close();
+            header("Location: new-internship.php?status=error&msg=" . urlencode("Failed to create internship record " . $error));
+            exit();
         }
 
         $stmt->close();

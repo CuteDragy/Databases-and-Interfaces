@@ -1,6 +1,12 @@
 <?php 
     session_start();
     include('db.php');
+    include('auth-check.php');
+
+    $condition = "where user_id = 12345 ";
+    $instruction = "select * from users $condition";
+    $action = mysqli_query($conn, $instruction) or die(mysqli_error($conn));
+    $user_profile = mysqli_fetch_array($action);
 ?>
 
 <!DOCTYPE html>
@@ -9,14 +15,9 @@
     <title>Admin Index | User Profile</title>
     <link rel="stylesheet" href="css/admin-sidebar.css">
     <link rel="stylesheet" href="css/user-profile-edit.css">
+    <?php include('error-function.php'); ?>
 </head>
 <body>
-    <?php 
-        $condition = "where user_id = 12345 ";
-        $instruction = "select * from users $condition";
-        $action = mysqli_query($conn, $instruction) or die(mysqli_error($conn));
-        $user_profile = mysqli_fetch_array($action);
-    ?>
     <div class="sidebar" id="mySidebar">
         <div>
             <p style="margin-top: 10px; margin-left: 13px; margin-bottom: 3px; line-height: 1; box-sizing: content-box;
@@ -44,7 +45,7 @@
                     <td style="padding-left: 15px;"><h1>Editting User Profile</h1></td>
                 </tr>
             </table>
-            <div><a href="#" title="Logout"><img src="image/logout-button.png" width="50" height="50" style="margin-right:15px;"></a></div>
+            <div><a href="logout.php" title="Logout"><img src="image/logout-button.png" width="50" height="50" style="margin-right:15px;"></a></div>
         </header>
 
         
@@ -105,7 +106,7 @@
                             </div>
                             <div class="data">
                                 <label>PASSWORD</label><br>
-                                <input type="text" name="passwords" value="<?php echo $user_profile['passwords'] ?>">
+                                <input type="text" name="passwords">
                             </div>
                         </div>
                     </div>
