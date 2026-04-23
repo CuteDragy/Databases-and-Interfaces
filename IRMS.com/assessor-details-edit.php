@@ -1,9 +1,10 @@
 <?php 
     session_start();
-    include('db.php');
+    include('config.php');
     include('auth-check.php');
 
-    $condition = "where user_id = 12345 ";
+    $user_id = $_SESSION['user'];
+    $condition = "where user_id = $user_id";
     $instruction = "select * from users $condition";
     $action = mysqli_query($conn, $instruction) or die(mysqli_error($conn));
     $user_profile = mysqli_fetch_array($action);
@@ -74,9 +75,9 @@
                             <span class="error-msg" id="error-role"></span>
                             <label for="role">ROLE</label>
                             <input type="text" id="role" name="role" value="Assessor" readonly><br>
-                            <span class="error-msg" id="error-passwords"></span>
-                            <label for="passwords">PASSWORD</label>
-                            <input type="password" id="passwords" name="passwords"><br>
+                            <span class="error-msg" id="error-password"></span>
+                            <label for="password">PASSWORD</label>
+                            <input type="password" id="password" name="password"><br>
                             <span class="error-msg" id="error-email"></span>
                             <label for="email">EMAIL</label>
                             <input type="text" id="email" name="email" value="<?php echo $assessor_details['email'] ?>"><br>

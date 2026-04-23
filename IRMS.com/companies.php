@@ -1,9 +1,10 @@
 <?php 
     session_start();
-    include('db.php');
+    include('config.php');
     include('auth-check.php');
     
-    $condition = "where user_id = 12345 ";
+    $user_id = $_SESSION['user'];
+    $condition = "where user_id = $user_id";
     $instruction = "select * from users $condition";
     $action = mysqli_query($conn, $instruction) or die(mysqli_error($conn));
     $user_profile = mysqli_fetch_array($action);
@@ -11,7 +12,7 @@
     $search_attempted = isset($_GET['search_term']);
     if($search_attempted && !empty($_GET['search_term'])){
         $search_term = mysqli_real_escape_string($conn, $_GET['search_term']);
-        $search_condition = "WHERE company_name like '%$search_term%'";
+        $search_condition = "WHERE company_name like '%$search_term%' OR company_id like '%$search_term%'";
     }else{
         $search_condition = "";
     }
@@ -55,7 +56,7 @@
                     <td style="padding-left: 15px;"><h1>Companies</h1></td>
                 </tr>
             </table>
-            <div><a href="#" title="Logout"><img src="image/logout-button.png" width="50" height="50"></a></div>
+            <div><a href="logout.php" title="Logout"><img src="image/logout-button.png" width="50" height="50"></a></div>
         </header>
 
         <div id="internship-header-container">
@@ -71,10 +72,10 @@
         </div>
         <div id="search-bar-container">
             <div id="search-bar-outer">
-                <div id="search-bar-inner">
+                <form action="companies.php" method="GET" id="search-bar-inner">
                     <img src="image/search-icon.png" height="12" width="12">
-                    <input type="text" placeholder="Search internships..." id="search_term" name="search_term">
-                </div>
+                    <input type="text" placeholder="Search companies..." id="search_term" name="search_term">
+                </form>
             </div>
         </div>
 

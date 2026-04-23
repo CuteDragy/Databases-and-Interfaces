@@ -1,5 +1,5 @@
 <?php 
-    include('db.php');
+    include('config.php');
     include('auth-check.php');
 
     if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submit-button"])){

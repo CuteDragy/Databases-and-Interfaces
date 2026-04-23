@@ -1,5 +1,5 @@
 <?php 
-    include('db.php');
+    include('config.php');
 
     if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submit-button"])){
         $student_id = $_POST['student_id'];
@@ -18,7 +18,7 @@
         $hashOptions = ['cost' => 12];
         $role = 'Student';
         $organization = 'University of Nottingham Malaysia';
-        $h_passwords = password_hash($student_id, PASSWORD_DEFAULT, $hashOptions);
+        $h_password = password_hash($student_id, PASSWORD_DEFAULT, $hashOptions);
 
         $sql = "INSERT INTO students (student_id, name, gender, date_of_birth, faculty, programme, contact_no, 
         emergency_contact_no, emergency_contact_relation, personal_email, school_email, address) 
@@ -38,12 +38,12 @@
         }
         $stmt->close();
 
-        $user_sql = "INSERT INTO users (user_id, name, role, passwords, email, organization) 
+        $user_sql = "INSERT INTO users (user_id, name, role, password, email, organization) 
         VALUES (?, ?, ?, ?, ?, ?)";
 
         $user_stmt = $conn->prepare($user_sql);
 
-        $user_stmt->bind_param("isssss", $student_id, $name, $role, $h_passwords, $school_email, $organization);
+        $user_stmt->bind_param("isssss", $student_id, $name, $role, $h_password, $school_email, $organization);
 
         if(!$user_stmt->execute()){
             $user_error = $user_stmt->error;

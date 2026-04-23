@@ -1,5 +1,5 @@
 <?php 
-    include('db.php');
+    include('config.php');
 
     $hashOptions = ['cost' => 12 ];
 
@@ -7,18 +7,18 @@
         $user_id = $_POST['user_id'];
         $name = $_POST['name'];
         $role = $_POST['role'];
-        $passwords = $_POST['passwords'];
-        $h_passwords = password_hash($passwords, PASSWORD_DEFAULT, $hashOptions);
+        $password = $_POST['password'];
+        $h_password = password_hash($password, PASSWORD_DEFAULT, $hashOptions);
         $email = $_POST['email'];
         $organization = $_POST['organization'];
 
-        $sql = "UPDATE users SET name=?, role=?, passwords=?, email=?, organization=? WHERE user_id=?"; 
+        $sql = "UPDATE users SET name=?, role=?, password=?, email=?, organization=? WHERE user_id=?"; 
         
 
         $stmt = $conn->prepare($sql);
 
 
-        $stmt->bind_param("sssssi", $name, $role, $h_passwords, $email, $organization, $user_id);
+        $stmt->bind_param("sssssi", $name, $role, $h_password, $email, $organization, $user_id);
 
         if($stmt->execute()){
             $stmt->close();

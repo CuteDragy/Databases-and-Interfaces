@@ -1,9 +1,10 @@
 <?php 
     session_start();
-    include('db.php');
+    include('config.php');
     include('auth-check.php');
 
-    $condition = "where user_id = 12345 ";
+    $user_id = $_SESSION['user'];
+    $condition = "where user_id = $user_id";
     $instruction = "select * from users $condition";
     $action = mysqli_query($conn, $instruction) or die(mysqli_error($conn));
     $user_profile = mysqli_fetch_array($action);
@@ -126,8 +127,8 @@
                                 <input type="text" id="name" name="name" value="<?php echo $assessor_details['name']?>"><br>
                             </div>
                             <div>
-                                <label for="passwords">PASSWORD</label>
-                                <input type="password" id="passwords" name="passwords" readonly style="cursor: not-allowed"><br>
+                                <label for="password">PASSWORD</label>
+                                <input type="password" id="password" name="password" readonly style="cursor: not-allowed"><br>
                             </div>
                             <div>
                                 <label for="organization">ORGANIZATION</label>

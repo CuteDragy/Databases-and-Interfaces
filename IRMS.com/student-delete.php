@@ -1,5 +1,5 @@
 <?php 
-    include('db.php');
+    include('config.php');
 
     if($_SERVER['REQUEST_METHOD'] !== 'POST'){
         header("Location: student-profile.php");

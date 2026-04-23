@@ -1,9 +1,10 @@
 <?php 
     session_start();
-    include('db.php');
+    include('config.php');
     include('auth-check.php');
 
-    $condition = "where user_id = 12345 ";
+    $user_id = $_SESSION['user'];
+    $condition = "where user_id = $user_id";
     $instruction = "select * from users $condition";
     $action = mysqli_query($conn, $instruction) or die(mysqli_error($conn));
     $user_profile = mysqli_fetch_array($action);
@@ -11,7 +12,7 @@
     $search_attempted = isset($_GET['search_term']);
     if($search_attempted && !empty($_GET['search_term'])){
         $search_term = mysqli_real_escape_string($conn, $_GET['search_term']);
-        $search_condition = "WHERE student_id like '%$search_term%'";
+        $search_condition = "WHERE student_id like '%$search_term%' OR name like '%$search_term%'";
     }else{
         $search_condition = "";
     }
@@ -70,10 +71,10 @@
 
         <div id="function-container">
             <div id="functions">
-                <div id="search-bar">
+                <form method="GET" action="student-profile.php" id="search-bar">
                     <img src="image/search-icon.png" height="12" width="12">
                     <input type="text" placeholder="Search students..." id="search_term" name="search_term">
-                </div>
+                </form>
                 <div id="add-button"><a href="add-student.php">+ Add New Student</a></div>
             </div>
         </div>

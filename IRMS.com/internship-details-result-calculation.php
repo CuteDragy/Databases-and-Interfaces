@@ -1,5 +1,5 @@
 <?php 
-    include('db.php');
+    include('config.php');
 
     $projects = $safety = $knowledge = $report = $language = $activities = 0; 
     $project_management = $time_management = $total_score = 0;

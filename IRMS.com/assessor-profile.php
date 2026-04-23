@@ -1,9 +1,10 @@
 <?php 
     session_start();
-    include('db.php');
+    include('config.php');
     include('auth-check.php');
     
-    $condition = "where user_id = 12345 ";
+    $user_id = $_SESSION['user'];
+    $condition = "where user_id = $user_id";
     $instruction = "select * from users $condition";
     $action = mysqli_query($conn, $instruction) or die(mysqli_error($conn));
     $user_profile = mysqli_fetch_array($action);
@@ -71,10 +72,10 @@
 
         <div id="function-container">
             <div id="functions">
-                <div id="search-bar">
+                <form method="GET" action="assessor-profile.php" id="search-bar">
                     <img src="image/search-icon.png" height="12" width="12">
                     <input type="text" placeholder="Search assessors..." id="search_term" name="search_term">
-                </div>
+                </form>
                 <div id="add-button">
                     <?php echo"<a href='add-assessor.php'>+ Add New Assessor</a>"; ?>
                 </div>

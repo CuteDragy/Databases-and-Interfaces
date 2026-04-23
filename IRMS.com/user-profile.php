@@ -1,6 +1,6 @@
 <?php 
     session_start();
-    include('db.php');
+    include('config.php');
     include('auth-check.php');
 ?>
 
