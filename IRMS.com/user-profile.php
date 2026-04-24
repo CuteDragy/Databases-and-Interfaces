@@ -2,6 +2,12 @@
     session_start();
     include('config.php');
     include('auth-check.php');
+
+    $user_id = $_SESSION['user'];
+    $condition = "where user_id = $user_id";
+    $instruction = "select * from users $condition";
+    $action = mysqli_query($conn, $instruction) or die(mysqli_error($conn));
+    $user_profile = mysqli_fetch_array($action);
 ?>
 
 <!DOCTYPE html>
@@ -12,12 +18,6 @@
     <link rel="stylesheet" href="css/user-profile.css?v=<?php echo filemtime('style.css');?>">
 </head>
 <body>
-    <?php 
-        $condition = "where user_id = 12345 ";
-        $instruction = "select * from users $condition";
-        $action = mysqli_query($conn, $instruction) or die(mysqli_error($conn));
-        $user_profile = mysqli_fetch_array($action);
-    ?>
     <div class="sidebar" id="mySidebar">
         <div>
             <p style="margin-top: 10px; margin-left: 13px; margin-bottom: 3px; line-height: 1; box-sizing: content-box;

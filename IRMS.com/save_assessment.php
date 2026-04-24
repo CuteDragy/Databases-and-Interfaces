@@ -3,90 +3,141 @@ ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
 session_start();
-include 'db.php';
+include 'config.php';
 
-if (!isset($_SESSION['user_id'])) {
-    echo json_encode(['success' => false, 'message' => 'Not logged in']);
+if (!isset($_SESSION['user'])) {
+    header("Location: LoginMenu.php");
     exit();
 }
 
-$raw  = file_get_contents("php://input");
-$data = json_decode($raw, true);
-
-// Debug — remove after fixing
-if (!$data) {
-    echo json_encode(['success' => false, 'message' => 'No data received', 'raw' => $raw]);
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    header("Location: markentry.php");
     exit();
 }
 
-if (!isset($data['criteria']) || !is_array($data['criteria'])) {
-    echo json_encode(['success' => false, 'message' => 'Missing criteria', 'data' => $data]);
+$assessor_id   = (int) $_SESSION['user'];
+$internship_id = (int) ($_POST['internship_id'] ?? 0);
+$role          = trim($_POST['role'] ?? '');
+$total_score   = (float) ($_POST['total_score'] ?? 0);
+
+if ($internship_id === 0 || $role === '') {
+    $_SESSION['error'] = "Missing internship or role. Please select a student.";
+    header("Location: markentry.php");
     exit();
 }
 
-$assessor_id   = $_SESSION['user_id'];
-$internship_id = intval($data['internship_id']);
-$role          = $data['role'];
-$total_score   = floatval($data['total_score']);
-$criteria_json = json_encode($data['criteria']);
+// ── Read per-criterion scores and notes from POST ─────────────────────────────
+// assessor.js names them: scores[0], scores[1] ... scores[7]
+//                         notes[0],  notes[1]  ... notes[7]
+$scores = $_POST['scores'] ?? [];
+$notes  = $_POST['notes']  ?? [];
 
-$comments = implode(" | ", array_map(function($c) {
-    return $c['component'] . ': ' . ($c['notes'] ?? '');
-}, $data['criteria']));
+if (count($scores) < 8) {
+    $_SESSION['error'] = "Incomplete scores submitted. Please fill in all criteria.";
+    header("Location: markentry.php");
+    exit();
+}
 
-// Check if assessment already exists
-$check = mysqli_prepare($conn, "SELECT COUNT(*) FROM assessments WHERE internship_id = ? AND assessor_id = ?");
+// Weights matching SHARED_CRITERIA order in assessor.js
+$weights = [10, 10, 10, 15, 10, 15, 15, 15];
+
+// Calculate each weighted score and total
+$weighted = [];
+$calc_total = 0;
+for ($i = 0; $i < 8; $i++) {
+    $score = (float) ($scores[$i] ?? 0);
+    $w     = ((float) $weights[$i] / 5) * $score;
+    $weighted[$i] = $w;
+    $calc_total  += $w;
+}
+
+// Map to named DB columns
+$undertaking_projects       = $weighted[0];
+$health_safety_requirements = $weighted[1];
+$knowledge                  = $weighted[2];
+$report                     = $weighted[3];
+$language_clarity           = $weighted[4];
+$lifelong_activities        = $weighted[5];
+$project_management         = $weighted[6];
+$time_management            = $weighted[7];
+   
+$comment_parts = [];
+for ($i = 0; $i < 8; $i++) {
+    $note = trim($notes[$i] ?? '');
+    if ($note !== '') {
+        $comment_parts[] = $note;
+    }
+}
+$comments = implode(" ", $comment_parts);
+
+// ── Check if assessment already exists ───────────────────────────────────────
+$check = mysqli_prepare($conn,
+    "SELECT COUNT(*) FROM assessments WHERE internship_id = ? AND assessor_id = ?");
 mysqli_stmt_bind_param($check, "ii", $internship_id, $assessor_id);
 mysqli_stmt_execute($check);
 mysqli_stmt_bind_result($check, $count);
 mysqli_stmt_fetch($check);
 mysqli_stmt_close($check);
 
+// ── INSERT or UPDATE ──────────────────────────────────────────────────────────
 if ($count > 0) {
-    // Update existing
     $stmt = mysqli_prepare($conn, "
         UPDATE assessments SET
-            role         = ?,
-            total_score  = ?,
-            criteria     = ?,
-            comments     = ?
+            undertaking_projects       = ?,
+            health_safety_requirements = ?,
+            knowledge                  = ?,
+            report                     = ?,
+            language_clarity           = ?,
+            lifelong_activities        = ?,
+            project_management         = ?,
+            time_management            = ?,
+            total_score                = ?,
+            comments                   = ?
         WHERE internship_id = ? AND assessor_id = ?
     ");
-    mysqli_stmt_bind_param($stmt, "sdssii",
-        $role, $total_score, $criteria_json, $comments,
+    mysqli_stmt_bind_param($stmt, "dddddddddsii",
+        $undertaking_projects, $health_safety_requirements, $knowledge,
+        $report, $language_clarity, $lifelong_activities,
+        $project_management, $time_management,
+        $calc_total, $comments,
         $internship_id, $assessor_id
     );
 } else {
-    // Insert new
     $stmt = mysqli_prepare($conn, "
         INSERT INTO assessments
-            (internship_id, assessor_id, role, total_score, criteria, comments)
-        VALUES (?, ?, ?, ?, ?, ?)
+            (internship_id, assessor_id,
+             undertaking_projects, health_safety_requirements, knowledge,
+             report, language_clarity, lifelong_activities,
+             project_management, time_management,
+             total_score, comments)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     ");
-    mysqli_stmt_bind_param($stmt, "iisdss",
-        $internship_id, $assessor_id, $role, $total_score, $criteria_json, $comments
+    mysqli_stmt_bind_param($stmt, "iiddddddddds",
+        $internship_id, $assessor_id,
+        $undertaking_projects, $health_safety_requirements, $knowledge,
+        $report, $language_clarity, $lifelong_activities,
+        $project_management, $time_management,
+        $calc_total, $comments
     );
 }
 
 if (mysqli_stmt_execute($stmt)) {
-    if ($count > 0) {
-        $id_query = mysqli_prepare($conn, "SELECT assessment_id FROM assessments WHERE internship_id = ? AND assessor_id = ?");
-        mysqli_stmt_bind_param($id_query, "ii", $internship_id, $assessor_id);
-        mysqli_stmt_execute($id_query);
-        mysqli_stmt_bind_result($id_query, $assessment_id);
-        mysqli_stmt_fetch($id_query);
-        mysqli_stmt_close($id_query);
-    } else {
-        $assessment_id = mysqli_insert_id($conn);
-    }
+    $assessment_id = ($count > 0)
+        ? (function() use ($conn, $internship_id, $assessor_id) {
+            $q = mysqli_prepare($conn, "SELECT assessment_id FROM assessments WHERE internship_id = ? AND assessor_id = ?");
+            mysqli_stmt_bind_param($q, "ii", $internship_id, $assessor_id);
+            mysqli_stmt_execute($q);
+            mysqli_stmt_bind_result($q, $id);
+            mysqli_stmt_fetch($q);
+            mysqli_stmt_close($q);
+            return $id;
+          })()
+        : mysqli_insert_id($conn);
 
-    echo json_encode([
-        'success'       => true,
-        'message'       => 'Assessment saved successfully',
-        'assessment_id' => $assessment_id,
-        'total_score'   => $total_score,
-    ]);
+    $_SESSION['success'] = "Assessment saved! (ID: $assessment_id, Total: " . number_format($calc_total, 2) . ")";
+    header("Location: markentry.php");
 } else {
-    echo json_encode(['success' => false, 'message' => 'Failed to save: ' . mysqli_error($conn)]);
+    $_SESSION['error'] = "Failed to save: " . mysqli_stmt_error($stmt);
+    header("Location: markentry.php");
 }
-?>
+exit();
