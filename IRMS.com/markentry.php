@@ -60,14 +60,14 @@ unset($_SESSION['success'], $_SESSION['error']);
             <?php if ($flash_success): ?>
                 <div style="padding:14px 18px; background:#d4edda; border:1px solid #28a745;
                             border-radius:8px; color:#155724; margin-bottom:16px;">
-                    ✅ <?= htmlspecialchars($flash_success) ?>
+                       <?= htmlspecialchars($flash_success) ?>
                 </div>
             <?php endif; ?>
 
             <?php if ($flash_error): ?>
                 <div style="padding:14px 18px; background:#f8d7da; border:1px solid #dc3545;
                             border-radius:8px; color:#721c24; margin-bottom:16px;">
-                    ❌ <?= htmlspecialchars($flash_error) ?>
+                       <?= htmlspecialchars($flash_error) ?>
                 </div>
             <?php endif; ?>
 
