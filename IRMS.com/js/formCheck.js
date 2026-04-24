@@ -18,7 +18,6 @@ function validateForm(formId) {
     const form = document.getElementById(formId);
     if (!form) return true;
 
-    // Validate all text, email, date, password inputs (excluding readonly/hidden)
     const inputs = form.querySelectorAll("input:not([type='radio']):not([type='submit']):not([readonly]):not([type='hidden']), textarea");
     inputs.forEach(function (field) {
         if (field.value.trim() === "") {
@@ -31,7 +30,6 @@ function validateForm(formId) {
         }
     });
 
-    // Validate radio button groups
     const radioGroups = {};
     form.querySelectorAll("input[type='radio']").forEach(function (radio) {
         if (!radioGroups[radio.name]) {
@@ -41,7 +39,7 @@ function validateForm(formId) {
 
     Object.keys(radioGroups).forEach(function (groupName) {
         const selected = form.querySelector("input[name='" + groupName + "']:checked");
-        const containerId = groupName + "-container";  // e.g. gender-container, current-status-container
+        const containerId = groupName + "-container";  
         if (!selected) {
             setError(groupName, "Please select an option.");
             isValid = false;

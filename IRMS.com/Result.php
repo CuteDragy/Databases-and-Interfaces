@@ -261,7 +261,7 @@ $hasResults = $totalCount > 0;
 
     const commentsHtml = data.comments ? `
       <div class="comments-block">
-        <div class="comments-label"><i class='bx bx-comment-detail'></i> Supervisor Comments</div>
+        <div class="comments-label"><i class='bx bx-comment-detail'></i>Comments</div>
         <div class="comments-body">${data.comments.replace(/\n/g, '<br>')}</div>
       </div>` : '';
 

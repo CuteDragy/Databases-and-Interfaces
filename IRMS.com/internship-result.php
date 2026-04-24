@@ -42,7 +42,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Admin Index | Student Profile</title>
+    <title>Admin Index | Internship Result</title>
     <link rel="stylesheet" href="css/admin-sidebar.css">
     <link rel="stylesheet" href="css/internship-result.css?v=<?php echo filemtime('style.css');?>">
 </head>
@@ -58,9 +58,9 @@
             <p style="margin-left: 13px; margin-bottom: 3px; line-height: 1; box-sizing: content-box; font-weight: bold; font-size: 26px;">Menu</p>
             <a href="admin-index.php" id="navigation-button">Home</a>
             <a href="user-profile.php" id="navigation-button">User Profile</a>
-            <a href="student-profile.php" id="navigation-button" style="background-color:black; color: white;">Student Profile</a>
+            <a href="student-profile.php" id="navigation-button">Student Profile</a>
             <a href="assessor-profile.php" id="navigation-button">Assessor Profile</a>
-            <a href="internships.php" id="navigation-button">Internships</a>
+            <a href="internships.php" id="navigation-button" style="background-color:black; color: white;">Internships</a>
             <a href="companies.php" id="navigation-button">Companies</a>
         </div>
     </div>
@@ -71,7 +71,7 @@
             <table>
                 <tr>
                     <td style="padding: 5px;"><button class="menu-btn" onclick="toggleSidebar()">&#9776;</button></td>
-                    <td style="padding-left: 15px;"><h1>Student Profiles</h1></td>
+                    <td style="padding-left: 15px;"><h1>Internship Result</h1></td>
                 </tr>
             </table>
             <div><a href="logout.php" title="Logout"><img src="image/logout-button.png" width="50" height="50"></a></div>
