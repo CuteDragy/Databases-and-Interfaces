@@ -26,9 +26,7 @@ if ($internship_id === 0 || $role === '') {
     exit();
 }
 
-// ── Read per-criterion scores and notes from POST ─────────────────────────────
-// assessor.js names them: scores[0], scores[1] ... scores[7]
-//                         notes[0],  notes[1]  ... notes[7]
+//scores[0..7] and notes [0..7] from assessor.js
 $scores = $_POST['scores'] ?? [];
 $notes  = $_POST['notes']  ?? [];
 
@@ -41,7 +39,6 @@ if (count($scores) < 8) {
 // Weights matching SHARED_CRITERIA order in assessor.js
 $weights = [10, 10, 10, 15, 10, 15, 15, 15];
 
-// Calculate each weighted score and total
 $weighted = [];
 $calc_total = 0;
 for ($i = 0; $i < 8; $i++) {
@@ -70,7 +67,7 @@ for ($i = 0; $i < 8; $i++) {
 }
 $comments = implode(" ", $comment_parts);
 
-// ── Check if assessment already exists ───────────────────────────────────────
+
 $check = mysqli_prepare($conn,
     "SELECT COUNT(*) FROM assessments WHERE internship_id = ? AND assessor_id = ?");
 mysqli_stmt_bind_param($check, "ii", $internship_id, $assessor_id);
@@ -79,7 +76,7 @@ mysqli_stmt_bind_result($check, $count);
 mysqli_stmt_fetch($check);
 mysqli_stmt_close($check);
 
-// ── INSERT or UPDATE ──────────────────────────────────────────────────────────
+
 if ($count > 0) {
     $stmt = mysqli_prepare($conn, "
         UPDATE assessments SET
