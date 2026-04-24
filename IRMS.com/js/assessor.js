@@ -1,9 +1,3 @@
-/**
- * assessor.js  v4
- * Uses a plain HTML form POST — no JSON, no fetch().
- * Scores submitted as scores[0]..scores[7], notes as notes[0]..notes[7]
- */
-
 const SHARED_CRITERIA = [
     { component: "Undertaking Tasks/Projects",                       weight: 10 },
     { component: "Health and Safety Requirements at the Workplace",   weight: 10 },
@@ -20,13 +14,12 @@ const CRITERIA = {
     supervisor: SHARED_CRITERIA,
 };
 
-// ── Called by detectRole() in markentry.php ───────────────────────────────────
+
 function buildAssessmentTable() {
     const role = document.getElementById("hiddenRole").value;
     renderAssessmentTable(role);
 }
 
-// ── Render table rows with plain POST-friendly inputs ────────────────────────
 function renderAssessmentTable(role) {
     const tbody = document.getElementById("assessmentBody");
     tbody.innerHTML = "";
@@ -61,7 +54,6 @@ function renderAssessmentTable(role) {
     recalculate();
 }
 
-// ── Recalculate weighted contributions and total ─────────────────────────────
 function recalculate() {
     const role = document.getElementById("hiddenRole").value;
     const rows = CRITERIA[role] || [];
@@ -82,7 +74,6 @@ function recalculate() {
     if (hiddenTotal) hiddenTotal.value = total.toFixed(2);
 }
 
-// ── Validate before form submits ─────────────────────────────────────────────
 function validateForm() {
     if (!document.getElementById("hiddenStudentId").value) {
         alert("Please select a student before saving.");
@@ -105,7 +96,7 @@ function validateForm() {
     return true;
 }
 
-// ── Reset form to initial state ──────────────────────────────────────────────
+//Reset form to initial state 
 function resetForm() {
     document.getElementById("studentSelect").value       = "";
     document.getElementById("roleDisplay").textContent   = "— detected automatically —";
