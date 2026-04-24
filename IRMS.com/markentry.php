@@ -9,7 +9,7 @@ if (!isset($_SESSION['user'])) {
 
 $assessor_id = $_SESSION['user'];
 
-// Fetch assessor's name and role from users table
+//Get assessor name and role
 $user_stmt = $conn->prepare("SELECT name, role FROM users WHERE user_id = ?");
 $user_stmt->bind_param("i", $assessor_id);
 $user_stmt->execute();
@@ -36,7 +36,7 @@ $stmt->execute();
 $result = $stmt->get_result();
 $students = $result->fetch_all(MYSQLI_ASSOC);
 
-// Read and clear flash messages
+//flash messages
 $flash_success = $_SESSION['success'] ?? '';
 $flash_error   = $_SESSION['error']   ?? '';
 unset($_SESSION['success'], $_SESSION['error']);
