@@ -69,13 +69,8 @@ if (count($students) === 0) {
 
         <div class="content">
 
-            <!-- ═══════════════════════════════════════════════
-                 FORM: submits all visible + hidden data to
-                 submitAssessment.php via POST
-            ════════════════════════════════════════════════ -->
-            <form id="assessmentForm" action="submitAssessment.php" method="POST">
+            <form id="assessmentForm" action="save_assessment.php" method="POST">
 
-                <!-- Hidden fields populated by JS when a student is selected -->
                 <input type="hidden" name="assessor_id"    id="hiddenAssessorId"    value="<?= $assessor_id ?>">
                 <input type="hidden" name="student_id"     id="hiddenStudentId"     value="">
                 <input type="hidden" name="internship_id"  id="hiddenInternshipId"  value="">
@@ -95,7 +90,7 @@ if (count($students) === 0) {
                         </div>
                         <div class="field-group">
                             <label for="studentSelect">SELECT STUDENT</label>
-                            <!-- Not named — selection drives hidden fields only -->
+
                             <select id="studentSelect" onchange="detectRole()">
                                 <option value="">-- Select a student --</option>
                                 <?php foreach ($students as $student): ?>
@@ -110,13 +105,7 @@ if (count($students) === 0) {
                     </div>
                 </div>
 
-                <!--
-                    Assessment table is built dynamically by buildAssessmentTable().
-                    Each <tr> will contain:
-                      <input type="number" name="scores[<component_key>]" ...>
-                      <textarea name="notes[<component_key>]" ...></textarea>
-                    so they are submitted as arrays keyed by component.
-                -->
+ 
                 <table id="assessmentTable" style="display:none;">
                     <thead>
                         <tr>
@@ -157,7 +146,7 @@ if (count($students) === 0) {
         </div>
     </div>
 
-    <script src="assessor.js"></script>
+    <script src="assessor.js?v=2"></script>
     <script>
         function toggleSidebar() {
             document.getElementById("mySidebar").classList.toggle("show");
@@ -190,14 +179,14 @@ if (count($students) === 0) {
                 roleDisplay.textContent = "— detected automatically —";
             }
 
-            // Keep data-internship on the table (used by assessor.js if needed)
+
             document.getElementById("assessmentTable")
                     .setAttribute("data-internship", internshipId || "");
 
             if (role) {
                 document.getElementById("assessmentTable").style.display = "table";
                 document.getElementById("submitBtn").style.display = "inline-block";
-                buildAssessmentTable();   // defined in assessor.js — must produce named inputs
+                buildAssessmentTable();  
             } else {
                 document.getElementById("assessmentTable").style.display = "none";
                 document.getElementById("submitBtn").style.display = "none";
