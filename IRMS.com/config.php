@@ -2,7 +2,7 @@
     $server_name = "localhost";
     $username = "root";
     $password = "root";
-    $dbname = "internship_management";
+    $dbname = "COMP1044_Database";
 
     $conn = new mysqli($server_name,$username,$password,$dbname);
 
